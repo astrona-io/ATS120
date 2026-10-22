@@ -1,0 +1,92 @@
+# The workstation pod: the Sigstore client tools, the trust files of the
+# private Sigstore stack (ConfigMap sigstore-trust at /etc/sigstore) and a
+# projected service account token with audience `sigstore` at
+# /var/run/sigstore/token. Its keyless identity is
+# https://kubernetes.io/namespaces/workstation/serviceaccounts/workstation.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workstation-setup
+  namespace: workstation
+data:
+  install-tools.sh: |
+    #!/bin/sh
+    # Downloads the pinned client tools into /tools (an emptyDir shared with
+    # the main container). Runs once, as an init container.
+    set -eu
+    COSIGN_VERSION=3.1.4
+    REKOR_VERSION=1.5.5
+    REGCTL_VERSION=0.11.7
+    ARCH="$(uname -m)"
+    case "$ARCH" in x86_64) ARCH=amd64 ;; aarch64|arm64) ARCH=arm64 ;; esac
+    wget -q "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${ARCH}" -O /tools/cosign
+    wget -q "https://github.com/sigstore/rekor/releases/download/v${REKOR_VERSION}/rekor-cli-linux-${ARCH}" -O /tools/rekor-cli
+    wget -q "https://github.com/regclient/regclient/releases/download/v${REGCTL_VERSION}/regctl-linux-${ARCH}" -O /tools/regctl
+    chmod 0755 /tools/*
+    ls -l /tools
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workstation
+  namespace: workstation
+  labels:
+    app: workstation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workstation
+  template:
+    metadata:
+      labels:
+        app: workstation
+    spec:
+      serviceAccountName: workstation
+      initContainers:
+        - name: install-tools
+          image: alpine:3.22
+          command: ["sh", "/setup/install-tools.sh"]
+          volumeMounts:
+            - name: tools
+              mountPath: /tools
+            - name: setup
+              mountPath: /setup
+      containers:
+        - name: workstation
+          image: alpine:3.22
+          command: ["sh", "-c", "apk add --no-cache curl jq openssl >/dev/null && /tools/regctl registry set registry.localtest.me:5001 --tls disabled && mkdir -p /work && while true; do sleep 30; done"]
+          workingDir: /work
+          env:
+            - name: PATH
+              value: /tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+            - name: REGISTRY
+              value: registry.localtest.me:5001
+          volumeMounts:
+            - name: tools
+              mountPath: /tools
+            - name: setup
+              mountPath: /setup
+            - name: sigstore-trust
+              mountPath: /etc/sigstore
+              readOnly: true
+            - name: sigstore-token
+              mountPath: /var/run/sigstore
+              readOnly: true
+      volumes:
+        - name: tools
+          emptyDir: {}
+        - name: setup
+          configMap:
+            name: workstation-setup
+        - name: sigstore-trust
+          configMap:
+            name: sigstore-trust
+            optional: true
+        - name: sigstore-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  audience: sigstore
+                  expirationSeconds: 3600

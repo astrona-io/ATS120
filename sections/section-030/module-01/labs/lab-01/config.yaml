@@ -1,0 +1,55 @@
+# Tighten A Verification Script
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-lab-030-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-lab-030-01-setup"
+      description: "Creates the starting state the task works from"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-accepts-release"
+      description: "Confirms the script accepts the image signed by ci/release-bot"
+      type: "file"
+      source: "validation/validate-accepts-release.sh"
+    - name: "validate-rejects-other-namespace"
+      description: "Confirms the script rejects build/release-bot"
+      type: "file"
+      source: "validation/validate-rejects-other-namespace.sh"
+    - name: "validate-rejects-workstation"
+      description: "Confirms the script rejects the workstation identity"
+      type: "file"
+      source: "validation/validate-rejects-workstation.sh"
+    - name: "validate-issuer-pinned"
+      description: "Confirms the script pins the issuer and uses no insecure flags"
+      type: "file"
+      source: "validation/validate-issuer-pinned.sh"
+
+teardown:
+  keepCluster: false

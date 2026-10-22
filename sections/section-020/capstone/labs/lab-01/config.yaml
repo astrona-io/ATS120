@@ -1,0 +1,51 @@
+# Sign Two Images With Their Own Identities
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-capstone-020"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-capstone-020-setup"
+      description: "Creates the starting state the task works from"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-podinfo-identity"
+      description: "Confirms podinfo verifies for ci/release-bot"
+      type: "file"
+      source: "validation/validate-podinfo-identity.sh"
+    - name: "validate-worker-identity"
+      description: "Confirms worker verifies for ci/worker-bot"
+      type: "file"
+      source: "validation/validate-worker-identity.sh"
+    - name: "validate-digests"
+      description: "Confirms the signers name digests, not tags"
+      type: "file"
+      source: "validation/validate-digests.sh"
+
+teardown:
+  keepCluster: false

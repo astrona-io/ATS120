@@ -1,0 +1,51 @@
+# Sign As The Release Bot
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-lab-020-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-lab-020-01-setup"
+      description: "Creates the starting state the task works from"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-job-identity"
+      description: "Confirms the Job sign-release ran as release-bot without a Secret"
+      type: "file"
+      source: "validation/validate-job-identity.sh"
+    - name: "validate-signature-identity"
+      description: "Confirms the release digest verifies for ci/release-bot"
+      type: "file"
+      source: "validation/validate-signature-identity.sh"
+    - name: "validate-digest-unchanged"
+      description: "Confirms the signed digest is the original release digest"
+      type: "file"
+      source: "validation/validate-digest-unchanged.sh"
+
+teardown:
+  keepCluster: false

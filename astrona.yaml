@@ -1,0 +1,332 @@
+# Course manifest for ATS120 - Keyless Signing With Fulcio & OIDC (Sigstore).
+#
+# One entry per section under `modules:`. Each section lists, in order: its
+# README, then for each module the landing page (course.md), its parts
+# (course-0N-*.md), and right after the part a lab tests, the lab's
+# question.md reading and the `type: lab` entry. The module's summary page
+# comes last. The section capstone closes the section. Playgrounds are not
+# listed: the landing page's playground marker shows them. solution.md is
+# never listed.
+#
+# Every `path:` is relative to this file.
+
+training:
+  id: ATS120
+  title: "Sigstore: Keyless Signing With Fulcio & OIDC"
+  maturity: draft
+  description: >
+    Training material covering the Keyless Signing With Fulcio & OIDC domain
+    of the Sigstore training path: how keyless signing works, OIDC identity
+    tokens, the short-lived certificates Fulcio issues and the identity they
+    carry, signing as a Kubernetes workload identity, verifying identities and
+    issuers precisely, GitHub Actions identities, and keyless signing in CI
+    jobs without long-lived keys. Each module pairs a layered reader with an
+    ungraded hands-on playground and a graded practice lab, on a private
+    Sigstore stack in the cluster. Each section closes with an integration
+    capstone. Written for cosign v3.1.4.
+
+  certification:
+    name: Sigstore
+    code: SIGSTORE
+    provider: Astrona
+    domain: Keyless Signing With Fulcio & OIDC
+    weight: 25
+
+modules:
+
+  - id: module-intro
+    title: "Introduction"
+    description: >
+      Start here. What this course trains you to do, how it is laid out, how
+      to get your machine ready with the astrona command-line tool, how the
+      content is written and checked, who maintains it, and how to report a
+      mistake.
+
+    content:
+      - type: reading
+        title: Introduction
+        path: sections/intro/README.md
+      - type: reading
+        title: "Welcome To The Course"
+        path: sections/intro/course-01-welcome.md
+      - type: reading
+        title: "Get Your Machine Ready"
+        path: sections/intro/course-02-get-your-machine-ready.md
+      - type: reading
+        title: "How This Course Is Made"
+        path: sections/intro/course-03-how-this-course-is-made.md
+
+  - id: module-010
+    title: "How Keyless Signing Works"
+    description: >
+      The keyless flow from start to end: an ephemeral key, an OIDC identity
+      token, the short-lived certificate Fulcio issues for it, the
+      certificate transparency log, and the Rekor entry that keeps the
+      signature valid after the certificate expires.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Sign Without A Long-Lived Key"
+        path: sections/section-010/module-01/course.md
+      - type: reading
+        title: "From Long-Lived Keys To Short-Lived Certificates"
+        path: sections/section-010/module-01/course-01-from-keys-to-certificates.md
+      - type: reading
+        title: "Reading An OIDC Identity Token"
+        path: sections/section-010/module-01/course-02-reading-an-oidc-token.md
+      - type: reading
+        title: "What Fulcio Puts In A Certificate"
+        path: sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Sign A Release File Keylessly And Publish Its Bundle Lab"
+        path: sections/section-010/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: keyless-flow
+        task_kind: build
+        tags: [keyless, sign-blob, bundle, fulcio-certificate, san, verify-blob, rekor]
+        learning_goals:
+          - Sign a file keylessly with the workstation's projected token
+          - Publish the Sigstore bundle so others can verify the file
+          - Prove the bundle verifies for the workstation identity and for no other
+        resources:
+          - name: "Signing blobs with cosign"
+            url: https://docs.sigstore.dev/cosign/signing/signing_with_blobs/
+          - name: "The Sigstore bundle format"
+            url: https://docs.sigstore.dev/about/bundle/
+          - name: "Certificate authority overview"
+            url: https://docs.sigstore.dev/certificate_authority/overview/
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-010/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Repair A Keyless Signing Setup Capstone"
+        path: sections/section-010/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 35m
+        topic: oidc
+        task_kind: troubleshooting
+        tags: [token-audience, projected-token, signing-config, keyless, bundle, verify-blob]
+        learning_goals:
+          - Find why Fulcio refuses a token from the token's own claims
+          - Repair the signing configuration and the token audience without new trust files
+          - Replace a key-based bundle with a keyless one that verifies for the workstation
+        resources:
+          - name: "OIDC usage in Fulcio"
+            url: https://docs.sigstore.dev/certificate_authority/oidc-in-fulcio/
+          - name: "Projected volumes: service account tokens"
+            url: https://kubernetes.io/docs/concepts/storage/projected-volumes/
+
+  - id: module-020
+    title: "Signing With A Workload Identity"
+    description: >
+      Signing an image keylessly with a Kubernetes service account token, the
+      identity Fulcio writes for it, and running the signer as its own
+      workload so every signature names the job that made it.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Sign As A Kubernetes Workload"
+        path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "Signing An Image With A Service Account Token"
+        path: sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+      - type: reading
+        title: "Running The Signer As Its Own Workload"
+        path: sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Sign As The Release Bot Lab"
+        path: sections/section-020/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: workload-identity
+        task_kind: build
+        tags: [service-account, projected-token, cosign-sign, cosign-verify, certificate-identity, digest]
+        learning_goals:
+          - Run a signing Job as the release-bot service account
+          - Sign the release digest without any stored key
+          - Prove the signature verifies for ci/release-bot
+        resources:
+          - name: "Signing containers"
+            url: https://docs.sigstore.dev/cosign/signing/overview/
+          - name: "Configure service accounts for pods"
+            url: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-01/course-03-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-020/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Sign Two Images With Their Own Identities Capstone"
+        path: sections/section-020/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: workload-identity
+        task_kind: troubleshooting
+        tags: [service-account, token-audience, digest, cosign-sign, certificate-identity, ci-job]
+        learning_goals:
+          - Find why one signing Job signed as the wrong identity and another failed
+          - Fix the service account, the token audience and the image reference
+          - Prove each image verifies for its own identity
+        resources:
+          - name: "Verifying signatures"
+            url: https://docs.sigstore.dev/cosign/verifying/verify/
+          - name: "Projected volumes: service account tokens"
+            url: https://kubernetes.io/docs/concepts/storage/projected-volumes/
+
+  - id: module-030
+    title: "Verifying Identities Precisely"
+    description: >
+      Exact identities against regular expressions, pinning the issuer,
+      the GitHub Actions identity and its claims, and verifying a bundle
+      offline with a trusted root.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Verify Exactly Who Signed"
+        path: sections/section-030/module-01/course.md
+      - type: reading
+        title: "Exact Identities, Regular Expressions And Issuers"
+        path: sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+      - type: reading
+        title: "GitHub Actions Identities"
+        path: sections/section-030/module-01/course-02-github-actions-identities.md
+      - type: reading
+        title: "Verifying Offline With A Bundle"
+        path: sections/section-030/module-01/course-03-verifying-offline-with-a-bundle.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Tighten A Verification Script Lab"
+        path: sections/section-030/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: verification
+        task_kind: troubleshooting
+        tags: [certificate-identity, identity-regexp, certificate-oidc-issuer, cosign-verify, trusted-root, service-account]
+        learning_goals:
+          - Find which identities a regular expression really accepts
+          - Pin the exact identity and the issuer in a verification script
+          - Prove the script accepts only the release bot of one namespace
+        resources:
+          - name: "Verifying signatures"
+            url: https://docs.sigstore.dev/cosign/verifying/verify/
+          - name: "Certificate authority overview"
+            url: https://docs.sigstore.dev/certificate_authority/overview/
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-030/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Verify Which Repository Built A Public Image Capstone"
+        path: sections/section-030/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: verification
+        task_kind: build
+        tags: [github-actions, github-claims, certificate-oidc-issuer, identity-regexp, cosign-verify, fulcio-extensions]
+        learning_goals:
+          - Read the GitHub claims Fulcio wrote into a public image's certificate
+          - Write a check that accepts one repository and rejects another of the same organisation
+          - Pin the GitHub Actions issuer
+        resources:
+          - name: "Flux security: signed images"
+            url: https://fluxcd.io/flux/security/
+          - name: "Verifying signatures"
+            url: https://docs.sigstore.dev/cosign/verifying/verify/
+          - name: "About security hardening with OpenID Connect"
+            url: https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect
+
+  - id: module-040
+    title: "Keyless Signing In CI"
+    description: >
+      Keyless signing in GitHub Actions with ambient credentials, and the same
+      pattern in a Kubernetes Job: sign the digest, verify it in the same run,
+      and keep no key anywhere.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-040/README.md
+
+      - type: reading
+        title: "Sign In CI Without A Stored Key"
+        path: sections/section-040/module-01/course.md
+      - type: reading
+        title: "Keyless Signing In GitHub Actions"
+        path: sections/section-040/module-01/course-01-keyless-signing-in-github-actions.md
+      - type: reading
+        title: "A Kubernetes Job As The CI Signer"
+        path: sections/section-040/module-01/course-02-a-kubernetes-job-as-the-ci-signer.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Sign And Verify In A CI Job Lab"
+        path: sections/section-040/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: ci
+        task_kind: build
+        tags: [ci-job, service-account, projected-token, cosign-sign, cosign-verify, certificate-identity, digest]
+        learning_goals:
+          - Build a Job that signs the release digest as ci-builder
+          - Verify the signature in the same Job with the exact identity
+          - Keep every key and Secret out of the pipeline
+        resources:
+          - name: "Sigstore CI quickstart"
+            url: https://docs.sigstore.dev/quickstart/quickstart-ci/
+          - name: "Verifying signatures"
+            url: https://docs.sigstore.dev/cosign/verifying/verify/
+      - type: reading
+        title: Summary
+        path: sections/section-040/module-01/course-03-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-040/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Move A Pipeline From A Signing Key To Keyless Capstone"
+        path: sections/section-040/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 35m
+        topic: ci
+        task_kind: migration
+        tags: [key-migration, ci-job, keyless, certificate-identity, cosign-verify, service-account]
+        learning_goals:
+          - Replace a key-based signing Job with a keyless one
+          - Remove the long-lived key from the cluster
+          - Move the verification script from a key to a pinned identity
+        resources:
+          - name: "Sigstore CI quickstart"
+            url: https://docs.sigstore.dev/quickstart/quickstart-ci/
+          - name: "Signing containers"
+            url: https://docs.sigstore.dev/cosign/signing/overview/

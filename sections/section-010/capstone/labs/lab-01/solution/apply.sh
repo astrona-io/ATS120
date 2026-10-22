@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# Reference solution for ats-120-capstone-010, applied only by `astrona test` (the
+# `testing:` block). `astrona run` never runs this. Taken from solution.md -
+# if one changes, change the other.
+set -euo pipefail
+
+ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+oidc_issuer() { kubectl -n workstation get configmap sigstore-trust -o jsonpath='{.data.oidc-issuer}'; }
+sa_identity() { echo "https://kubernetes.io/namespaces/$1/serviceaccounts/$2"; }
+image_digest() { ws regctl image digest "$1"; }
+# verify_image IDENTITY IMAGE: keyless verification against the private stack.
+verify_image() {
+  ws cosign verify --trusted-root /etc/sigstore/trusted-root.json --allow-http-registry \
+    --certificate-identity "$1" --certificate-oidc-issuer "$(oidc_issuer)" "$2" >/dev/null 2>&1
+}
+# copy_trust NAMESPACE: copies the ConfigMap sigstore-trust into a namespace.
+copy_trust() {
+  kubectl get namespace "$1" >/dev/null 2>&1 || kubectl create namespace "$1"
+  kubectl -n workstation get configmap sigstore-trust -o yaml \
+    | sed -e '/^  namespace:/d' -e '/resourceVersion:/d' -e '/uid:/d' -e '/creationTimestamp:/d' \
+    | kubectl -n "$1" apply -f -
+}
+# signer_job NAMESPACE SERVICEACCOUNT JOBNAME IMAGE [AUDIENCE]: prints a Job
+# that signs IMAGE keylessly with the service account's projected token.
+signer_job() {
+  cat <<YAML
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: $3
+  namespace: $1
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: $2
+      restartPolicy: Never
+      containers:
+        - name: cosign
+          image: ghcr.io/sigstore/cosign/cosign:v3.1.4
+          args:
+            - sign
+            - --yes
+            - --allow-http-registry
+            - --identity-token=/var/run/sigstore/token
+            - --signing-config=/etc/sigstore/signing-config.json
+            - --trusted-root=/etc/sigstore/trusted-root.json
+            - $4
+          env:
+            - name: HOME
+              value: /tmp
+          volumeMounts:
+            - name: sigstore-trust
+              mountPath: /etc/sigstore
+              readOnly: true
+            - name: sigstore-token
+              mountPath: /var/run/sigstore
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: sigstore-trust
+          configMap:
+            name: sigstore-trust
+        - name: sigstore-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  audience: ${5:-sigstore}
+                  expirationSeconds: 600
+        - name: tmp
+          emptyDir: {}
+YAML
+}
+# run_job NAMESPACE JOBNAME: waits for a Job to finish; returns non-zero if it failed.
+run_job() {
+  for _ in $(seq 1 120); do
+    s="$(kubectl -n "$1" get job "$2" -o jsonpath='{.status.succeeded}' 2>/dev/null)"
+    f="$(kubectl -n "$1" get job "$2" -o jsonpath='{.status.failed}' 2>/dev/null)"
+    [ "${s:-0}" -ge 1 ] && return 0
+    [ "${f:-0}" -ge 1 ] && return 1
+    sleep 5
+  done
+  return 1
+}
+# sign_as NAMESPACE SERVICEACCOUNT JOBNAME IMAGE: signs and waits.
+sign_as() {
+  kubectl -n "$1" delete job "$3" --ignore-not-found >/dev/null
+  signer_job "$1" "$2" "$3" "$4" | kubectl apply -f -
+  run_job "$1" "$3"
+}
+# copy_image SOURCE DESTINATION: copies one linux/amd64 image into the registry.
+copy_image() { ws regctl image copy --platform linux/amd64 "$1" "$2"; }
+REG=registry.localtest.me:5001
+TMP="$(mktemp -d)"
+for key in trusted-root.json signing-config.json oidc-issuer; do
+  kubectl -n workstation get configmap sigstore-trust -o jsonpath="{.data.${key//./\\.}}" > "$TMP/$key"
+done
+sed -i.bak 's#http://fulcio.fulcio-system.svc#http://fulcio-server.fulcio-system.svc#g' "$TMP/signing-config.json"
+kubectl -n workstation create configmap sigstore-trust \
+  --from-file=trusted-root.json="$TMP/trusted-root.json" \
+  --from-file=signing-config.json="$TMP/signing-config.json" \
+  --from-file=oidc-issuer="$TMP/oidc-issuer" --dry-run=client -o yaml | kubectl apply -f -
+rm -rf "$TMP"
+kubectl -n workstation patch deployment workstation --type=json -p \
+  '[{"op":"replace","path":"/spec/template/spec/volumes/3/projected/sources/0/serviceAccountToken/audience","value":"sigstore"}]'
+kubectl -n workstation rollout status deployment/workstation --timeout=600s
+for _ in $(seq 1 60); do ws sh -c 'command -v jq >/dev/null' 2>/dev/null && break; sleep 5; done
+# The restart emptied /work: put the original release file back.
+kubectl -n workstation get configmap release-files -o jsonpath='{.binaryData.inventory-1\.0\.tar\.gz}' \
+  | base64 -d | ws sh -c 'mkdir -p /work/release && cat > /work/release/inventory-1.0.tar.gz'
+
+ws cosign sign-blob --yes \
+  --identity-token /var/run/sigstore/token \
+  --signing-config /etc/sigstore/signing-config.json \
+  --trusted-root /etc/sigstore/trusted-root.json \
+  --bundle /work/release/inventory-1.0.tar.gz.sigstore.json \
+  /work/release/inventory-1.0.tar.gz
+
+TMP="$(mktemp -d)"
+ws cat /work/release/inventory-1.0.tar.gz.sigstore.json > "$TMP/inventory-1.0.tar.gz.sigstore.json"
+kubectl -n workstation create configmap release-bundle \
+  --from-file=inventory-1.0.tar.gz.sigstore.json="$TMP/inventory-1.0.tar.gz.sigstore.json" \
+  --dry-run=client -o yaml | kubectl apply -f -
+rm -rf "$TMP"

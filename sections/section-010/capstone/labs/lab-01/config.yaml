@@ -1,0 +1,55 @@
+# Repair A Keyless Signing Setup
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-capstone-010"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-capstone-010-setup"
+      description: "Creates the starting state the task works from"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-token-audience"
+      description: "Confirms the workstation token has the audience sigstore"
+      type: "file"
+      source: "validation/validate-token-audience.sh"
+    - name: "validate-signing-config"
+      description: "Confirms signing-config.json names the running Fulcio"
+      type: "file"
+      source: "validation/validate-signing-config.sh"
+    - name: "validate-bundle-keyless"
+      description: "Confirms the published bundle holds a Fulcio certificate for the workstation"
+      type: "file"
+      source: "validation/validate-bundle-keyless.sh"
+    - name: "validate-bundle-verifies"
+      description: "Confirms cosign verify-blob accepts the bundle for the workstation identity only"
+      type: "file"
+      source: "validation/validate-bundle-verifies.sh"
+
+teardown:
+  keepCluster: false

@@ -1,0 +1,92 @@
+# Base objects for every ATS120 environment: the OCI registry (Distribution,
+# plain HTTP on port 5001, lab-only), the namespaces and service accounts that
+# sign, and the RBAC binding Fulcio needs to read the cluster's public OIDC
+# keys. The Sigstore stack itself is installed by Helm in the bootstrap.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: registry
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+  namespace: registry
+  labels:
+    app: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      containers:
+        - name: registry
+          image: registry:3.1.2
+          env:
+            - name: REGISTRY_HTTP_ADDR
+              value: ":5001"
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 5001
+          readinessProbe:
+            httpGet:
+              path: /v2/
+              port: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry
+  namespace: registry
+spec:
+  selector:
+    app: registry
+  ports:
+    - name: http
+      port: 5001
+      targetPort: http
+---
+# Fulcio fetches the cluster's OIDC discovery document and signing keys
+# (JWKS) without a token. This binding lets unauthenticated clients read
+# those two documents; they contain public keys only.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: oidc-reviewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:service-account-issuer-discovery
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:unauthenticated
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workstation
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workstation
+  namespace: workstation
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ci
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-bot
+  namespace: ci

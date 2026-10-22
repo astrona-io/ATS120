@@ -1,0 +1,51 @@
+# Sign A Release File Keylessly And Publish Its Bundle
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-lab-010-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-lab-010-01-setup"
+      description: "Creates the starting state the task works from"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-bundle-published"
+      description: "Confirms the ConfigMap release-bundle holds a Sigstore bundle with a log entry"
+      type: "file"
+      source: "validation/validate-bundle-published.sh"
+    - name: "validate-bundle-keyless"
+      description: "Confirms the bundle holds a Fulcio certificate for the workstation identity"
+      type: "file"
+      source: "validation/validate-bundle-keyless.sh"
+    - name: "validate-bundle-verifies"
+      description: "Confirms cosign verify-blob accepts the bundle for the workstation identity only"
+      type: "file"
+      source: "validation/validate-bundle-verifies.sh"
+
+teardown:
+  keepCluster: false

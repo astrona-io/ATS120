@@ -1,0 +1,28 @@
+# How Keyless Signing Works (PLAYGROUND) - Playground environment
+# A sandbox that spins up, installs the private Sigstore stack and the
+# workstation, then stays running for free exploration. No task, no grading.
+# Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-playground-010-01"
+  docs:
+    guide: "docs/overview.md"
+
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack (Fulcio, Rekor, CT log, Trillian) and the workstation, and builds the trust files."
+      type: "file"
+      source: "bootstrap/install-sigstore.sh"
+    - name: "prepare"
+      description: "Adds the playground's example service accounts, namespaces and images."
+      type: "file"
+      source: "bootstrap/prepare.sh"
+  manifests:
+    - name: "lab-start"
+      description: "Registry, namespaces, service accounts and the OIDC discovery binding."
+      type: "file"
+      source: "manifests/lab-start.yaml"
+
+teardown:
+  keepCluster: false
