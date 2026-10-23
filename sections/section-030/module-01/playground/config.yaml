@@ -7,7 +7,6 @@ metadata:
   name: "ats-120-playground-030-01"
   docs:
     guide: "docs/overview.md"
-
 bootstrap:
   init:
     - name: "install-sigstore"
@@ -23,6 +22,11 @@ bootstrap:
       description: "Registry, namespaces, service accounts and the OIDC discovery binding."
       type: "file"
       source: "manifests/lab-start.yaml"
-
 teardown:
   keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - alpine:3.22
+      - ghcr.io/sigstore/cosign/cosign:v3.1.4
+      - registry:3.1.2
