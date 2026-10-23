@@ -151,8 +151,14 @@ if ! kubectl -n workstation get configmap sigstore-trust >/dev/null 2>&1; then
     sleep 5
   done
   ws mkdir -p /tmp/trust
+  # kubectl exec -i can drop the end of stdin, so compare sizes and copy
+  # again until each file has arrived whole.
   for f in fulcio.pem ctfe.pub rekor.pub; do
-    ws sh -c "cat > /tmp/trust/$f" < "$WORK/$f"
+    for _ in 1 2 3 4 5; do
+      ws sh -c "cat > /tmp/trust/$f" < "$WORK/$f"
+      [ "$(ws sh -c "wc -c < /tmp/trust/$f" | tr -d ' ')" = "$(wc -c < "$WORK/$f" | tr -d ' ')" ] && break
+      sleep 1
+    done
   done
   ws cosign trusted-root create \
     --fulcio="url=http://fulcio-server.fulcio-system.svc,certificate-chain=/tmp/trust/fulcio.pem" \
