@@ -134,13 +134,18 @@ for _ in $(seq 1 60); do ws sh -c 'command -v jq >/dev/null' 2>/dev/null && brea
 # two files through TUF; this stack has no TUF server, so they are built here.
 if ! kubectl -n workstation get configmap sigstore-trust >/dev/null 2>&1; then
   echo "$LOG_PREFIX Building trusted-root.json and signing-config.json..."
-  for _ in $(seq 1 60); do
-    kubectl -n fulcio-system get secret fulcio-server-secret >/dev/null 2>&1 \
-      && kubectl -n ctlog-system get secret ctlog-public-key >/dev/null 2>&1 && break
+  # The scaffold's createcerts and createctconfig jobs fill these secrets; on a
+  # slow node they finish well after the deployments roll out.
+  for _ in $(seq 1 180); do
+    kubectl -n fulcio-system get secret fulcio-server-secret -o jsonpath='{.data.cert}' 2>/dev/null | base64 -d > "$WORK/fulcio.pem"
+    kubectl -n ctlog-system get secret ctlog-public-key -o jsonpath='{.data.public}' 2>/dev/null | base64 -d > "$WORK/ctfe.pub"
+    [ -s "$WORK/fulcio.pem" ] && [ -s "$WORK/ctfe.pub" ] && break
     sleep 5
   done
-  kubectl -n fulcio-system get secret fulcio-server-secret -o jsonpath='{.data.cert}' | base64 -d > "$WORK/fulcio.pem"
-  kubectl -n ctlog-system get secret ctlog-public-key -o jsonpath='{.data.public}' | base64 -d > "$WORK/ctfe.pub"
+  if [ ! -s "$WORK/fulcio.pem" ] || [ ! -s "$WORK/ctfe.pub" ]; then
+    echo "$LOG_PREFIX The Fulcio certificate or the CT log key never appeared." >&2
+    exit 1
+  fi
   for _ in $(seq 1 60); do
     ws curl -fsS http://rekor-server.rekor-system.svc/api/v1/log/publicKey > "$WORK/rekor.pub" 2>/dev/null && [ -s "$WORK/rekor.pub" ] && break
     sleep 5
