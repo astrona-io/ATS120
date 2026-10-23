@@ -30,6 +30,10 @@ spec:
           env:
             - name: REGISTRY_HTTP_ADDR
               value: ":5001"
+            # registry 3 runs its debug server on :5001 by default; move it
+            # so it does not clash with the listener above.
+            - name: REGISTRY_HTTP_DEBUG_ADDR
+              value: "127.0.0.1:5002"
             - name: REGISTRY_STORAGE_DELETE_ENABLED
               value: "true"
           ports:
