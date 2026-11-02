@@ -29,8 +29,6 @@ training:
     name: Sigstore
     code: SIGSTORE
     provider: Astrona
-    domain: Keyless Signing With Fulcio & OIDC
-    weight: 25
 
 modules:
 
