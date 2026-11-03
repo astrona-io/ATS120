@@ -124,7 +124,7 @@ You can now run a signer as its own workload, with no key and no Secret, and pro
 
 ## Your mission: Sign As The Release Bot
 
-You can now write a signing Job that runs as its own service account and verify its identity. The graded lab gives you the release digest in the ConfigMap `release-info` and asks you to sign it as `ci/release-bot`, without any stored key.
+You can now sign and verify a recorded digest. The graded lab gives you the release digest in the ConfigMap `release-info` and asks you to sign it as `ci/release-bot`, without any stored key.
 
 The lab runs in its own cluster, so first pause your playground. Nothing in it is lost:
 

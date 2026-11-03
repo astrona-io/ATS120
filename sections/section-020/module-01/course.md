@@ -4,7 +4,7 @@ A cluster runs many jobs: builds, tests, releases, nightly scans. If any of them
 
 A Kubernetes **service account** is the identity of a pod inside the cluster. With keyless signing, the pod's projected service account token becomes the identity in the certificate. So the rule is simple: give every signer its own service account, and its signatures carry their own identity.
 
-The module has two parts. **Signing An Image With A Service Account Token** signs an image from the workstation, shows where cosign stores the signature, and verifies it. **Running The Signer As Its Own Workload** moves the signing into a Job that runs as the service account `release-bot` and keeps no key anywhere. A graded lab follows the second part.
+The module has four parts. **Signing An Image With A Service Account Token** signs an image from the workstation, shows where cosign stores the signature, and verifies it. **Running The Signer As Its Own Workload** moves the signing into a Job that runs as the service account `release-bot` and keeps no key anywhere. **Finding What Is Attached To An Image** lists signatures with `cosign tree` and reads the answer of `cosign verify`. **Signing A Digest The Safe Way** records the digest at build time and signs only that. A graded lab follows the second part. The last two parts come after the lab.
 
 ## Learning objectives
 

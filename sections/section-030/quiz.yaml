@@ -243,3 +243,233 @@ questions:
         explanation: "Not correct. Nothing is stored."
     correct_option: b
     explanation: "Correct. Exit code 0 means the image was accepted."
+
+  - id: ats120-030-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a check for several exact signers"
+    source_readings:
+      - sections/section-030/module-01/course-04-checking-a-list-of-allowed-signers.md
+    prompt: "What should each entry in a list of allowed signers hold?"
+    options:
+      - id: a
+        text: "An exact identity and the exact issuer that vouches for it."
+        explanation: "Correct. An exact identity and the exact issuer that vouches for it."
+      - id: b
+        text: "Only a regular expression for the identity."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer that vouches for it."
+      - id: c
+        text: "Only the issuer."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer that vouches for it."
+      - id: d
+        text: "The public key of the signer."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer that vouches for it."
+    correct_option: a
+    explanation: "Correct. An exact identity and the exact issuer that vouches for it."
+
+  - id: ats120-030-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Avoid open doors in a list of signers"
+    source_readings:
+      - sections/section-030/module-01/course-04-checking-a-list-of-allowed-signers.md
+    prompt: "Which mistake turns a list of allowed signers into an open door?"
+    options:
+      - id: a
+        text: "Using exact strings."
+        explanation: "Not correct. The correct answer is: A pattern or a wildcard issuer in an entry."
+      - id: b
+        text: "Pinning the issuer."
+        explanation: "Not correct. The correct answer is: A pattern or a wildcard issuer in an entry."
+      - id: c
+        text: "Verifying a digest."
+        explanation: "Not correct. The correct answer is: A pattern or a wildcard issuer in an entry."
+      - id: d
+        text: "A pattern or a wildcard issuer in an entry."
+        explanation: "Correct. A pattern or a wildcard issuer in an entry."
+    correct_option: d
+    explanation: "Correct. A pattern or a wildcard issuer in an entry."
+
+  - id: ats120-030-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an attestation"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-an-attestation-is.md
+    prompt: "What does the subject field of an in-toto statement hold?"
+    options:
+      - id: a
+        text: "The predicate type."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, each with a digest."
+      - id: b
+        text: "The Rekor log index."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, each with a digest."
+      - id: c
+        text: "The artifacts the statement is about, each with a digest."
+        explanation: "Correct. The artifacts the statement is about, each with a digest."
+      - id: d
+        text: "The identity of the signer."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, each with a digest."
+    correct_option: c
+    explanation: "Correct. The artifacts the statement is about, each with a digest."
+
+  - id: ats120-030-q14
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe the DSSE envelope"
+    source_readings:
+      - sections/section-030/module-02/course-01-what-an-attestation-is.md
+    prompt: "What does the DSSE envelope of an attestation contain?"
+    options:
+      - id: a
+        text: "The registry credentials."
+        explanation: "Not correct. The correct answer is: The payload type, the base64 payload and the signatures."
+      - id: b
+        text: "The payload type, the base64 payload and the signatures."
+        explanation: "Correct. The payload type, the base64 payload and the signatures."
+      - id: c
+        text: "The private key and the certificate."
+        explanation: "Not correct. The correct answer is: The payload type, the base64 payload and the signatures."
+      - id: d
+        text: "Only the image layers."
+        explanation: "Not correct. The correct answer is: The payload type, the base64 payload and the signatures."
+    correct_option: b
+    explanation: "Correct. The payload type, the base64 payload and the signatures."
+
+  - id: ats120-030-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Create an attestation"
+    source_readings:
+      - sections/section-030/module-02/course-02-creating-an-attestation-keylessly.md
+    prompt: "Which cosign command creates an attestation for an image digest?"
+    options:
+      - id: a
+        text: "cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+        explanation: "Correct. cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+      - id: b
+        text: "cosign sign-blob --predicate FILE IMAGE"
+        explanation: "Not correct. The correct answer is: cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+      - id: c
+        text: "cosign tree --type TYPE IMAGE"
+        explanation: "Not correct. The correct answer is: cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+      - id: d
+        text: "cosign verify --predicate FILE IMAGE"
+        explanation: "Not correct. The correct answer is: cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+    correct_option: a
+    explanation: "Correct. cosign attest --predicate FILE --type TYPE IMAGE@DIGEST"
+
+  - id: ats120-030-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify an attestation"
+    source_readings:
+      - sections/section-030/module-02/course-03-verifying-an-attestation-and-its-content.md
+    prompt: "Which flag selects the predicate type in cosign verify-attestation?"
+    options:
+      - id: a
+        text: "--predicate"
+        explanation: "Not correct. The correct answer is: --type"
+      - id: b
+        text: "--attestation"
+        explanation: "Not correct. The correct answer is: --type"
+      - id: c
+        text: "--kind"
+        explanation: "Not correct. The correct answer is: --type"
+      - id: d
+        text: "--type"
+        explanation: "Correct. --type"
+    correct_option: d
+    explanation: "Correct. --type"
+
+  - id: ats120-030-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the predicate"
+    source_readings:
+      - sections/section-030/module-02/course-03-verifying-an-attestation-and-its-content.md
+    prompt: "Where is the statement in a verified attestation envelope?"
+    options:
+      - id: a
+        text: "In the Rekor log index."
+        explanation: "Not correct. The correct answer is: In the payload field, base64 encoded."
+      - id: b
+        text: "In the certificate subject."
+        explanation: "Not correct. The correct answer is: In the payload field, base64 encoded."
+      - id: c
+        text: "In the payload field, base64 encoded."
+        explanation: "Correct. In the payload field, base64 encoded."
+      - id: d
+        text: "In the signatures field."
+        explanation: "Not correct. The correct answer is: In the payload field, base64 encoded."
+    correct_option: c
+    explanation: "Correct. In the payload field, base64 encoded."
+
+  - id: ats120-030-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Check the content, not only the signer"
+    source_readings:
+      - sections/section-030/module-02/course-03-verifying-an-attestation-and-its-content.md
+    prompt: "Why must a gate check the predicate in addition to the signature of an attestation?"
+    options:
+      - id: a
+        text: "Fulcio does not issue certificates for attestations."
+        explanation: "Not correct. The correct answer is: A valid signature says who made the claim; it does not make the claim true."
+      - id: b
+        text: "A valid signature says who made the claim; it does not make the claim true."
+        explanation: "Correct. A valid signature says who made the claim; it does not make the claim true."
+      - id: c
+        text: "The predicate is encrypted."
+        explanation: "Not correct. The correct answer is: A valid signature says who made the claim; it does not make the claim true."
+      - id: d
+        text: "The signature covers only the subject."
+        explanation: "Not correct. The correct answer is: A valid signature says who made the claim; it does not make the claim true."
+    correct_option: b
+    explanation: "Correct. A valid signature says who made the claim; it does not make the claim true."
+
+  - id: ats120-030-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the policy controller resource"
+    source_readings:
+      - sections/section-030/module-02/course-04-enforcing-signers-and-claims-in-a-cluster.md
+    prompt: "Which custom resource of the sigstore policy controller lists images and authorities?"
+    options:
+      - id: a
+        text: "ClusterImagePolicy"
+        explanation: "Correct. ClusterImagePolicy"
+      - id: b
+        text: "ImagePolicyBinding"
+        explanation: "Not correct. The correct answer is: ClusterImagePolicy"
+      - id: c
+        text: "SignatureRule"
+        explanation: "Not correct. The correct answer is: ClusterImagePolicy"
+      - id: d
+        text: "AdmissionKey"
+        explanation: "Not correct. The correct answer is: ClusterImagePolicy"
+    correct_option: a
+    explanation: "Correct. ClusterImagePolicy"
+
+  - id: ats120-030-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain admission enforcement"
+    source_readings:
+      - sections/section-030/module-02/course-04-enforcing-signers-and-claims-in-a-cluster.md
+    prompt: "What is the advantage of checking signatures at admission over checking in a pipeline script?"
+    options:
+      - id: a
+        text: "It makes signatures shorter."
+        explanation: "Not correct. The correct answer is: It applies to every pod, however the pod was started."
+      - id: b
+        text: "It removes the need for a trusted root."
+        explanation: "Not correct. The correct answer is: It applies to every pod, however the pod was started."
+      - id: c
+        text: "It signs the images automatically."
+        explanation: "Not correct. The correct answer is: It applies to every pod, however the pod was started."
+      - id: d
+        text: "It applies to every pod, however the pod was started."
+        explanation: "Correct. It applies to every pod, however the pod was started."
+    correct_option: d
+    explanation: "Correct. It applies to every pod, however the pod was started."

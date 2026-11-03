@@ -12,20 +12,41 @@ This section covers both pipelines you are likely to meet. In GitHub Actions, a 
 - A complete keyless signing workflow for GitHub Actions, and the identity it produces.
 - Building a Kubernetes Job that signs the release digest and verifies it in the same run.
 - Moving a pipeline from a signing key in a Secret to keyless signing.
+- Protecting the signing step and verifying a CI signature at deploy time.
+- Other CI providers and issuers: how Fulcio trusts an issuer, GitLab CI identities, and the flags for each provider.
+- Operating keyless signing: migration, reading signing failures and keeping trust files current.
 
 ## The learning path
 
-The module starts at its landing page, which also launches the playground. The playground has the private Sigstore stack, the registry with the release image, the namespace `ci` with the service account `ci-builder`, and the ConfigMap `release-info` with the release digest.
+Each module starts at its landing page, which also launches that module's playground. The playground has the private Sigstore stack, the registry with the release image, the namespace `ci` with the service account `ci-builder`, and the ConfigMap `release-info` with the release digest.
 
 ### 1. Sign In CI Without A Stored Key
 
 1. Keyless Signing In GitHub Actions
 2. A Kubernetes Job As The CI Signer, followed by the lab **Sign And Verify In A CI Job**
-3. Summary
+3. Protecting The Signing Step
+4. Verifying A CI Signature At Deploy
+5. Summary
+
+### 2. Other CI Providers And Issuers
+
+1. How Fulcio Decides Which Issuers To Trust
+2. GitLab CI Identities
+3. Reading The Issuer And Subject Of Any Signature
+4. Choosing The Flags For Each Provider, followed by the lab **Configure A Verifier For A Provider**
+5. Summary
+
+### 3. Operate Keyless Signing
+
+1. Planning The Move From Keys To Keyless
+2. Running Two Signers During A Migration
+3. Reading The Failures Of A Signing Job
+4. Keeping Trust Current, followed by the lab **Find Why Three Signers Failed**
+5. Summary
 
 ## Section capstone: Move A Pipeline From A Signing Key To Keyless
 
-The capstone is one graded migration. The pipeline signs with a key pair kept in a Secret, and the deployment check verifies with the matching public key. You replace the signer, remove the key and move the check to a pinned identity. Work it after the module lab.
+The capstone is one graded migration. The pipeline signs with a key pair kept in a Secret, and the deployment check verifies with the matching public key. You replace the signer, remove the key and move the check to a pinned identity. Work it after the module labs.
 
 Start the capstone:
 

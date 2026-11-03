@@ -13,20 +13,32 @@ This section signs container images with Kubernetes service account tokens. Firs
 - The identity Fulcio writes for a Kubernetes service account.
 - Running a signing Job as a dedicated service account, with no stored key.
 - Verifying an image for one exact workload identity.
+- Finding the signatures and attestations attached to an image.
+- Which Kubernetes permissions let someone sign as a service account, how to audit them, and how to close them.
 
 ## The learning path
 
-The module starts at its landing page, which also launches the playground. The playground has the private Sigstore stack, the registry with `inventory/podinfo:6.15.0`, the `workstation` pod, and the namespace `ci` with the service account `release-bot`.
+Each module starts at its landing page, which also launches that module's playground. The playground has the private Sigstore stack, the registry with `inventory/podinfo:6.15.0`, the `workstation` pod, and the namespace `ci` with the service account `release-bot`.
 
 ### 1. Sign As A Kubernetes Workload
 
 1. Signing An Image With A Service Account Token
 2. Running The Signer As Its Own Workload, followed by the lab **Sign As The Release Bot**
-3. Summary
+3. Finding What Is Attached To An Image
+4. Signing A Digest The Safe Way
+5. Summary
+
+### 2. Control Who Can Sign As A Workload
+
+1. Who Can Get A Token For A Service Account
+2. Roles That Let Someone Sign
+3. Separate Signers By Namespace And Name
+4. Auditing Who Can Sign, followed by the lab **Close The Door Around The Release Signer**
+5. Summary
 
 ## Section capstone: Sign Two Images With Their Own Identities
 
-The capstone is one graded scenario that combines the module. Two signing Jobs are supposed to sign two images, each as its own service account. One of them signed as the wrong identity, and the other failed. Work it after the module lab.
+The capstone is one graded scenario that combines the modules. Two signing Jobs are supposed to sign two images, each as its own service account. One of them signed as the wrong identity, and the other failed. Work it after the module labs.
 
 Start the capstone:
 

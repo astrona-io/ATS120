@@ -1,0 +1,32 @@
+# Trust Roots And Signing Configuration (PLAYGROUND) - Playground environment
+# A sandbox that spins up, installs the private Sigstore stack and the
+# workstation, then stays running for free exploration. No task, no grading.
+# Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-playground-010-03"
+  docs:
+    guide: "docs/overview.md"
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack (Fulcio, Rekor, CT log, Trillian) and the workstation, and builds the trust files."
+      type: "file"
+      source: "bootstrap/install-sigstore.sh"
+    - name: "prepare"
+      description: "Creates the release file the module signs."
+      type: "file"
+      source: "bootstrap/prepare.sh"
+  manifests:
+    - name: "lab-start"
+      description: "Registry, namespaces, service accounts and the OIDC discovery binding."
+      type: "file"
+      source: "manifests/lab-start.yaml"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - alpine:3.22
+      - ghcr.io/sigstore/cosign/cosign:v3.1.4
+      - registry:3.1.2

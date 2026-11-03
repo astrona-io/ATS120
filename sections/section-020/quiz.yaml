@@ -243,3 +243,233 @@ questions:
         explanation: "Not correct. That removes the digest and fixes nothing."
     correct_option: a
     explanation: "Correct. The template is fixed after creation."
+
+  - id: ats120-020-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain that signing leaves the image unchanged"
+    source_readings:
+      - sections/section-020/module-01/course-03-finding-what-is-attached-to-an-image.md
+    prompt: "What happens to the image digest when you sign the image with cosign?"
+    options:
+      - id: a
+        text: "It stays the same, because the signature is stored as a separate artifact."
+        explanation: "Correct. It stays the same, because the signature is stored as a separate artifact."
+      - id: b
+        text: "It changes, because the signature is added to the manifest."
+        explanation: "Not correct. The correct answer is: It stays the same, because the signature is stored as a separate artifact."
+      - id: c
+        text: "It changes, because cosign adds a layer."
+        explanation: "Not correct. The correct answer is: It stays the same, because the signature is stored as a separate artifact."
+      - id: d
+        text: "It is deleted and recreated."
+        explanation: "Not correct. The correct answer is: It stays the same, because the signature is stored as a separate artifact."
+    correct_option: a
+    explanation: "Correct. It stays the same, because the signature is stored as a separate artifact."
+
+  - id: ats120-020-q12
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "List attached signatures"
+    source_readings:
+      - sections/section-020/module-01/course-03-finding-what-is-attached-to-an-image.md
+    prompt: "Which command lists the signatures and attestations attached to an image?"
+    options:
+      - id: a
+        text: "cosign generate-key-pair"
+        explanation: "Not correct. The correct answer is: cosign tree"
+      - id: b
+        text: "regctl image digest"
+        explanation: "Not correct. The correct answer is: cosign tree"
+      - id: c
+        text: "kubectl describe pod"
+        explanation: "Not correct. The correct answer is: cosign tree"
+      - id: d
+        text: "cosign tree"
+        explanation: "Correct. cosign tree"
+    correct_option: d
+    explanation: "Correct. cosign tree"
+
+  - id: ats120-020-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Record a digest at build time"
+    source_readings:
+      - sections/section-020/module-01/course-04-signing-a-digest-the-safe-way.md
+    prompt: "Why should a signing Job read the digest from a record made at build time?"
+    options:
+      - id: a
+        text: "The registry refuses to resolve tags."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing, and the Job would sign other content."
+      - id: b
+        text: "Fulcio only accepts digests in tokens."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing, and the Job would sign other content."
+      - id: c
+        text: "A tag can move between the build and the signing, and the Job would sign other content."
+        explanation: "Correct. A tag can move between the build and the signing, and the Job would sign other content."
+      - id: d
+        text: "Digests are shorter than tags."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing, and the Job would sign other content."
+    correct_option: c
+    explanation: "Correct. A tag can move between the build and the signing, and the Job would sign other content."
+
+  - id: ats120-020-q14
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the permissions that allow signing as a service account"
+    source_readings:
+      - sections/section-020/module-02/course-01-who-can-get-a-token-for-a-service-account.md
+    prompt: "Which permission lets a subject get a token for a service account without running a pod?"
+    options:
+      - id: a
+        text: "update on configmaps"
+        explanation: "Not correct. The correct answer is: create on serviceaccounts/token"
+      - id: b
+        text: "create on serviceaccounts/token"
+        explanation: "Correct. create on serviceaccounts/token"
+      - id: c
+        text: "get on secrets"
+        explanation: "Not correct. The correct answer is: create on serviceaccounts/token"
+      - id: d
+        text: "list on namespaces"
+        explanation: "Not correct. The correct answer is: create on serviceaccounts/token"
+    correct_option: b
+    explanation: "Correct. create on serviceaccounts/token"
+
+  - id: ats120-020-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use kubectl create token"
+    source_readings:
+      - sections/section-020/module-02/course-01-who-can-get-a-token-for-a-service-account.md
+    prompt: "What does kubectl -n ci create token release-bot --audience sigstore return?"
+    options:
+      - id: a
+        text: "A short-lived token for the service account, with the audience sigstore."
+        explanation: "Correct. A short-lived token for the service account, with the audience sigstore."
+      - id: b
+        text: "The password of the service account."
+        explanation: "Not correct. The correct answer is: A short-lived token for the service account, with the audience sigstore."
+      - id: c
+        text: "A Fulcio certificate."
+        explanation: "Not correct. The correct answer is: A short-lived token for the service account, with the audience sigstore."
+      - id: d
+        text: "The private key of the service account."
+        explanation: "Not correct. The correct answer is: A short-lived token for the service account, with the audience sigstore."
+    correct_option: a
+    explanation: "Correct. A short-lived token for the service account, with the audience sigstore."
+
+  - id: ats120-020-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check roles that allow signing"
+    source_readings:
+      - sections/section-020/module-02/course-02-roles-that-let-someone-sign.md
+    prompt: "Which built-in role allows a user to sign as a service account of its namespace?"
+    options:
+      - id: a
+        text: "view"
+        explanation: "Not correct. The correct answer is: edit"
+      - id: b
+        text: "none of the built-in roles"
+        explanation: "Not correct. The correct answer is: edit"
+      - id: c
+        text: "system:basic-user"
+        explanation: "Not correct. The correct answer is: edit"
+      - id: d
+        text: "edit"
+        explanation: "Correct. edit"
+    correct_option: d
+    explanation: "Correct. edit"
+
+  - id: ats120-020-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check permissions with kubectl auth can-i"
+    source_readings:
+      - sections/section-020/module-02/course-02-roles-that-let-someone-sign.md
+    prompt: "Which command shows whether the user dev-user can create pods in the namespace ci?"
+    options:
+      - id: a
+        text: "kubectl describe user dev-user"
+        explanation: "Not correct. The correct answer is: kubectl auth can-i create pods -n ci --as dev-user"
+      - id: b
+        text: "kubectl config view --as dev-user"
+        explanation: "Not correct. The correct answer is: kubectl auth can-i create pods -n ci --as dev-user"
+      - id: c
+        text: "kubectl auth can-i create pods -n ci --as dev-user"
+        explanation: "Correct. kubectl auth can-i create pods -n ci --as dev-user"
+      - id: d
+        text: "kubectl get pods -n ci --user dev-user"
+        explanation: "Not correct. The correct answer is: kubectl auth can-i create pods -n ci --as dev-user"
+    correct_option: c
+    explanation: "Correct. kubectl auth can-i create pods -n ci --as dev-user"
+
+  - id: ats120-020-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain namespace in the identity"
+    source_readings:
+      - sections/section-020/module-02/course-03-separate-signers-by-namespace-and-name.md
+    prompt: "Two namespaces each have a service account named release-bot. How do their signatures differ?"
+    options:
+      - id: a
+        text: "Only the Rekor log index differs."
+        explanation: "Not correct. The correct answer is: The certificate identities contain different namespaces."
+      - id: b
+        text: "The certificate identities contain different namespaces."
+        explanation: "Correct. The certificate identities contain different namespaces."
+      - id: c
+        text: "They are identical."
+        explanation: "Not correct. The correct answer is: The certificate identities contain different namespaces."
+      - id: d
+        text: "Only the issuer differs."
+        explanation: "Not correct. The correct answer is: The certificate identities contain different namespaces."
+    correct_option: b
+    explanation: "Correct. The certificate identities contain different namespaces."
+
+  - id: ats120-020-q19
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Audit who can sign"
+    source_readings:
+      - sections/section-020/module-02/course-04-auditing-who-can-sign.md
+    prompt: "Why is checking only role bindings in the namespace not enough when auditing who can sign?"
+    options:
+      - id: a
+        text: "Cluster role bindings, groups and impersonation rights also reach the namespace."
+        explanation: "Correct. Cluster role bindings, groups and impersonation rights also reach the namespace."
+      - id: b
+        text: "Role bindings do not grant pod creation."
+        explanation: "Not correct. The correct answer is: Cluster role bindings, groups and impersonation rights also reach the namespace."
+      - id: c
+        text: "Cluster role bindings only apply to nodes."
+        explanation: "Not correct. The correct answer is: Cluster role bindings, groups and impersonation rights also reach the namespace."
+      - id: d
+        text: "Impersonation needs no permission."
+        explanation: "Not correct. The correct answer is: Cluster role bindings, groups and impersonation rights also reach the namespace."
+    correct_option: a
+    explanation: "Correct. Cluster role bindings, groups and impersonation rights also reach the namespace."
+
+  - id: ats120-020-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Limit signing to the pipeline"
+    source_readings:
+      - sections/section-020/module-02/course-02-roles-that-let-someone-sign.md
+    prompt: "A developer needs to read pods in the signing namespace. Which binding is right?"
+    options:
+      - id: a
+        text: "A binding to the edit cluster role."
+        explanation: "Not correct. The correct answer is: A binding to the view cluster role."
+      - id: b
+        text: "A binding to the admin cluster role."
+        explanation: "Not correct. The correct answer is: A binding to the view cluster role."
+      - id: c
+        text: "A binding to the cluster-admin cluster role."
+        explanation: "Not correct. The correct answer is: A binding to the view cluster role."
+      - id: d
+        text: "A binding to the view cluster role."
+        explanation: "Correct. A binding to the view cluster role."
+    correct_option: d
+    explanation: "Correct. A binding to the view cluster role."

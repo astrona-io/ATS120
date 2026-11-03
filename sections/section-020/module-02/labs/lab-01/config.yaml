@@ -1,0 +1,56 @@
+# Close The Door Around The Release Signer
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-lab-020-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-lab-020-02-setup"
+      description: "Gives dev-user the edit role and pipeline-user the edit role in ci"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-dev-cannot-sign"
+      description: "Confirms dev-user can neither create pods nor mint tokens in ci"
+      type: "file"
+      source: "validation/validate-dev-cannot-sign.sh"
+    - name: "validate-dev-can-read"
+      description: "Confirms dev-user can still read workloads in ci"
+      type: "file"
+      source: "validation/validate-dev-can-read.sh"
+    - name: "validate-pipeline-intact"
+      description: "Confirms pipeline-user can still run signers and release-bot exists"
+      type: "file"
+      source: "validation/validate-pipeline-intact.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - alpine:3.22
+      - ghcr.io/sigstore/cosign/cosign:v3.1.4
+      - registry:3.1.2
+---
+estimated_duration: 20m
+---

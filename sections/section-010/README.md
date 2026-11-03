@@ -14,21 +14,41 @@ This section takes the keyless flow apart in the order it happens. First the ide
 - What Fulcio checks before it issues a certificate, and what it writes into the certificate.
 - Why a ten-minute certificate still verifies a year later: the transparency log.
 - Signing a file keylessly and verifying its Sigstore bundle.
+- How Fulcio receives a request, the certificate chain, the CT log and SCT, and how to read a Rekor entry.
+- Why a signature stays valid after its certificate expires.
+- What the trusted root and signing configuration contain, how keys rotate, and how to repair a verifier's trust.
 
 ## The learning path
 
-The module starts at its landing page, which also launches the playground. The playground has a private Sigstore stack, an image registry and the `workstation` pod with the client tools and a token for its own identity.
+Each module starts at its landing page, which also launches that module's playground. The playground has a private Sigstore stack, an image registry and the `workstation` pod with the client tools and a token for its own identity.
 
 ### 1. Sign Without A Long-Lived Key
 
 1. From Long-Lived Keys To Short-Lived Certificates
 2. Reading An OIDC Identity Token
 3. What Fulcio Puts In A Certificate, followed by the lab **Sign A Release File Keylessly And Publish Its Bundle**
-4. Summary
+4. Why The Signature Outlives The Certificate
+5. Summary
+
+### 2. Follow One Certificate Request
+
+1. The Request Fulcio Receives
+2. The Fulcio Root And The Certificate Chain
+3. Certificate Transparency And The SCT
+4. Reading A Rekor Entry, followed by the lab **Find The Rekor Entry Of A Release Signature**
+5. Summary
+
+### 3. Trust Roots And Signing Configuration
+
+1. What The Trusted Root Contains
+2. What The Signing Configuration Contains
+3. Validity Windows And Key Rotation
+4. How The Public-Good Instance Distributes Trust, followed by the lab **Repair A Verifier's Trusted Root**
+5. Summary
 
 ## Section capstone: Repair A Keyless Signing Setup
 
-The capstone is one graded scenario that combines the whole module. The workstation can no longer sign keylessly, and the release bundle someone published was made with a long-lived key. Three faults stand between you and a keyless bundle that verifies. Work it after the module lab.
+The capstone is one graded scenario that combines the modules. The workstation can no longer sign keylessly, and the release bundle someone published was made with a long-lived key. Three faults stand between you and a keyless bundle that verifies. Work it after the module labs.
 
 Start the capstone:
 

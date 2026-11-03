@@ -243,3 +243,233 @@ questions:
         explanation: "Not correct. Keyless signing has no password."
     correct_option: b
     explanation: "Correct. cosign refuses keyless verification without both."
+
+  - id: ats120-010-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name what cosign sends to Fulcio in a certificate request"
+    source_readings:
+      - sections/section-010/module-02/course-01-the-request-fulcio-receives.md
+    prompt: "What does the proof of possession in a Fulcio request prove?"
+    options:
+      - id: a
+        text: "That the requester holds the private key that matches the public key in the request."
+        explanation: "Correct. That the requester holds the private key that matches the public key in the request."
+      - id: b
+        text: "That the requester owns the email address in the token."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+      - id: c
+        text: "That the requester may sign any image in the registry."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+      - id: d
+        text: "That the OIDC provider is trusted by Fulcio."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+    correct_option: a
+    explanation: "Correct. That the requester holds the private key that matches the public key in the request."
+
+  - id: ats120-010-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check a certificate against the Fulcio root"
+    source_readings:
+      - sections/section-010/module-02/course-02-the-fulcio-root-and-the-certificate-chain.md
+    prompt: "Which command check shows that a leaf certificate was issued by the Fulcio chain?"
+    options:
+      - id: a
+        text: "openssl x509 -noout -dates on the leaf only."
+        explanation: "Not correct. The correct answer is: openssl verify with the root as trust anchor and the intermediate as untrusted input."
+      - id: b
+        text: "cosign tree on the image."
+        explanation: "Not correct. The correct answer is: openssl verify with the root as trust anchor and the intermediate as untrusted input."
+      - id: c
+        text: "regctl image digest on the tag."
+        explanation: "Not correct. The correct answer is: openssl verify with the root as trust anchor and the intermediate as untrusted input."
+      - id: d
+        text: "openssl verify with the root as trust anchor and the intermediate as untrusted input."
+        explanation: "Correct. openssl verify with the root as trust anchor and the intermediate as untrusted input."
+    correct_option: d
+    explanation: "Correct. openssl verify with the root as trust anchor and the intermediate as untrusted input."
+
+  - id: ats120-010-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the SCT in a certificate"
+    source_readings:
+      - sections/section-010/module-02/course-03-certificate-transparency-and-the-sct.md
+    prompt: "What does the signed certificate timestamp (SCT) in a Fulcio certificate promise?"
+    options:
+      - id: a
+        text: "That the OIDC token is still valid."
+        explanation: "Not correct. The correct answer is: That the certificate was submitted to a certificate transparency log, which will include it."
+      - id: b
+        text: "That the private key was deleted."
+        explanation: "Not correct. The correct answer is: That the certificate was submitted to a certificate transparency log, which will include it."
+      - id: c
+        text: "That the certificate was submitted to a certificate transparency log, which will include it."
+        explanation: "Correct. That the certificate was submitted to a certificate transparency log, which will include it."
+      - id: d
+        text: "That the signature was added to Rekor."
+        explanation: "Not correct. The correct answer is: That the certificate was submitted to a certificate transparency log, which will include it."
+    correct_option: c
+    explanation: "Correct. That the certificate was submitted to a certificate transparency log, which will include it."
+
+  - id: ats120-010-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Look up a Rekor entry"
+    source_readings:
+      - sections/section-010/module-02/course-04-reading-a-rekor-entry.md
+    prompt: "Which field of a bundle's log entry identifies the position of the entry in the Rekor log?"
+    options:
+      - id: a
+        text: "kind"
+        explanation: "Not correct. The correct answer is: logIndex"
+      - id: b
+        text: "logIndex"
+        explanation: "Correct. logIndex"
+      - id: c
+        text: "integratedTime"
+        explanation: "Not correct. The correct answer is: logIndex"
+      - id: d
+        text: "signedEntryTimestamp"
+        explanation: "Not correct. The correct answer is: logIndex"
+    correct_option: b
+    explanation: "Correct. logIndex"
+
+  - id: ats120-010-q15
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain what an inclusion proof proves"
+    source_readings:
+      - sections/section-010/module-02/course-04-reading-a-rekor-entry.md
+    prompt: "What does an inclusion proof against a signed checkpoint show?"
+    options:
+      - id: a
+        text: "That the entry is part of the log whose tree head Rekor signed."
+        explanation: "Correct. That the entry is part of the log whose tree head Rekor signed."
+      - id: b
+        text: "That the signer's identity is allowed to sign."
+        explanation: "Not correct. The correct answer is: That the entry is part of the log whose tree head Rekor signed."
+      - id: c
+        text: "That the certificate has not expired."
+        explanation: "Not correct. The correct answer is: That the entry is part of the log whose tree head Rekor signed."
+      - id: d
+        text: "That the artifact has no vulnerabilities."
+        explanation: "Not correct. The correct answer is: That the entry is part of the log whose tree head Rekor signed."
+    correct_option: a
+    explanation: "Correct. That the entry is part of the log whose tree head Rekor signed."
+
+  - id: ats120-010-q16
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the contents of a trusted root"
+    source_readings:
+      - sections/section-010/module-03/course-01-what-the-trusted-root-contains.md
+    prompt: "Which list of trusted_root.json holds the keys of the transparency log?"
+    options:
+      - id: a
+        text: "certificateAuthorities"
+        explanation: "Not correct. The correct answer is: tlogs"
+      - id: b
+        text: "ctlogs"
+        explanation: "Not correct. The correct answer is: tlogs"
+      - id: c
+        text: "timestampAuthorities"
+        explanation: "Not correct. The correct answer is: tlogs"
+      - id: d
+        text: "tlogs"
+        explanation: "Correct. tlogs"
+    correct_option: d
+    explanation: "Correct. tlogs"
+
+  - id: ats120-010-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the contents of a signing configuration"
+    source_readings:
+      - sections/section-010/module-03/course-02-what-the-signing-configuration-contains.md
+    prompt: "What is the signing configuration used for?"
+    options:
+      - id: a
+        text: "It holds the private key of the signer."
+        explanation: "Not correct. The correct answer is: It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+      - id: b
+        text: "It lists the images that may be signed."
+        explanation: "Not correct. The correct answer is: It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+      - id: c
+        text: "It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+        explanation: "Correct. It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+      - id: d
+        text: "It tells a verifier which identities to accept."
+        explanation: "Not correct. The correct answer is: It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+    correct_option: c
+    explanation: "Correct. It tells a signer which services to call: the CA, the OIDC providers, the transparency logs and the timestamp authorities."
+
+  - id: ats120-010-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain validity windows"
+    source_readings:
+      - sections/section-010/module-03/course-03-validity-windows-and-key-rotation.md
+    prompt: "Why does a trusted root keep an old log key with an end time after a rotation?"
+    options:
+      - id: a
+        text: "So that the certificate lives longer than ten minutes."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+      - id: b
+        text: "So that signatures made while that key was valid still verify."
+        explanation: "Correct. So that signatures made while that key was valid still verify."
+      - id: c
+        text: "So that the old key can sign new entries."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+      - id: d
+        text: "Because cosign refuses a file without an end time."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+    correct_option: b
+    explanation: "Correct. So that signatures made while that key was valid still verify."
+
+  - id: ats120-010-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe how trust is distributed"
+    source_readings:
+      - sections/section-010/module-03/course-04-how-the-public-good-instance-distributes-trust.md
+    prompt: "How does the public-good Sigstore instance distribute its trusted root?"
+    options:
+      - id: a
+        text: "Through a TUF repository that cosign fetches and verifies."
+        explanation: "Correct. Through a TUF repository that cosign fetches and verifies."
+      - id: b
+        text: "By email to each signer."
+        explanation: "Not correct. The correct answer is: Through a TUF repository that cosign fetches and verifies."
+      - id: c
+        text: "In the OIDC token."
+        explanation: "Not correct. The correct answer is: Through a TUF repository that cosign fetches and verifies."
+      - id: d
+        text: "In the image manifest."
+        explanation: "Not correct. The correct answer is: Through a TUF repository that cosign fetches and verifies."
+    correct_option: a
+    explanation: "Correct. Through a TUF repository that cosign fetches and verifies."
+
+  - id: ats120-010-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose a verifier with a broken trusted root"
+    source_readings:
+      - sections/section-010/module-03/course-03-validity-windows-and-key-rotation.md
+    prompt: "A verifier rejects a good bundle and its trusted root has an empty ctlogs list. What is the right fix?"
+    options:
+      - id: a
+        text: "Add --insecure-ignore-sct to the command."
+        explanation: "Not correct. The correct answer is: Use the trusted root published by the operator, with its ctlogs entry."
+      - id: b
+        text: "Sign the file again."
+        explanation: "Not correct. The correct answer is: Use the trusted root published by the operator, with its ctlogs entry."
+      - id: c
+        text: "Delete the Rekor key from the file."
+        explanation: "Not correct. The correct answer is: Use the trusted root published by the operator, with its ctlogs entry."
+      - id: d
+        text: "Use the trusted root published by the operator, with its ctlogs entry."
+        explanation: "Correct. Use the trusted root published by the operator, with its ctlogs entry."
+    correct_option: d
+    explanation: "Correct. Use the trusted root published by the operator, with its ctlogs entry."

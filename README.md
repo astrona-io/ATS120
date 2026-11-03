@@ -12,8 +12,8 @@ cluster with the `scaffold` Helm chart 0.6.117.
 > `CLAUDE.md`, which names the biggest open risk.
 
 The course opens with an Introduction in `sections/intro/`. Each section
-contains a module (landing page, parts, summary), a playground, a graded lab
-right after the part it tests, and a capstone.
+contains two or three modules (landing page, parts, summary), each with a
+playground and a graded lab right after the part it tests, and a section capstone.
 
 ---
 
@@ -21,10 +21,10 @@ right after the part it tests, and a capstone.
 
 | Section | Title | Modules | Labs | Topic |
 | --- | --- | --- | --- | --- |
-| [010](sections/section-010) | How Keyless Signing Works | 1 | 1 + capstone | Keyless flow |
-| [020](sections/section-020) | Signing With A Workload Identity | 1 | 1 + capstone | Workload identity |
-| [030](sections/section-030) | Verifying Identities Precisely | 1 | 1 + capstone | Verification |
-| [040](sections/section-040) | Keyless Signing In CI | 1 | 1 + capstone | CI |
+| [010](sections/section-010) | How Keyless Signing Works | 3 | 3 + capstone | Keyless flow |
+| [020](sections/section-020) | Signing With A Workload Identity | 2 | 2 + capstone | Workload identity |
+| [030](sections/section-030) | Verifying Identities Precisely | 2 | 2 + capstone | Verification |
+| [040](sections/section-040) | Keyless Signing In CI | 3 | 3 + capstone | CI |
 
 The order follows one signature from start to end: what happens when you sign
 keylessly, which identity a workload signs as, how a verifier checks that
@@ -35,13 +35,7 @@ identity exactly, and how a pipeline does all of it without a stored key.
 ## Modules
 
 | Module | Reader | Parts | Labs |
-| --- | --- | --- | --- |
-| 010-01 | [Sign Without A Long-Lived Key](sections/section-010/module-01/course.md) | 3 | [lab-01](sections/section-010/module-01/labs/lab-01) |
-| 020-01 | [Sign As A Kubernetes Workload](sections/section-020/module-01/course.md) | 2 | [lab-01](sections/section-020/module-01/labs/lab-01) |
-| 030-01 | [Verify Exactly Who Signed](sections/section-030/module-01/course.md) | 3 | [lab-01](sections/section-030/module-01/labs/lab-01) |
-| 040-01 | [Sign In CI Without A Stored Key](sections/section-040/module-01/course.md) | 2 | [lab-01](sections/section-040/module-01/labs/lab-01) |
-
----
+| ---
 
 ## Capstones
 

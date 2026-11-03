@@ -60,7 +60,10 @@ modules:
       The keyless flow from start to end: an ephemeral key, an OIDC identity
       token, the short-lived certificate Fulcio issues for it, the
       certificate transparency log, and the Rekor entry that keeps the
-      signature valid after the certificate expires.
+      signature valid after the certificate expires. Also the request Fulcio
+      receives, the certificate chain, the signed certificate timestamp, how
+      to read a Rekor entry, and the trusted root and signing configuration
+      a verifier relies on.
 
     content:
       - type: reading
@@ -102,8 +105,89 @@ modules:
           - name: "Certificate authority overview"
             url: https://docs.sigstore.dev/certificate_authority/overview/
       - type: reading
+        title: "Why The Signature Outlives The Certificate"
+        path: sections/section-010/module-01/course-04-why-the-signature-outlives-the-certificate.md
+      - type: reading
         title: Summary
-        path: sections/section-010/module-01/course-04-summary.md
+        path: sections/section-010/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Follow One Certificate Request"
+        path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "The Request Fulcio Receives"
+        path: sections/section-010/module-02/course-01-the-request-fulcio-receives.md
+      - type: reading
+        title: "The Fulcio Root And The Certificate Chain"
+        path: sections/section-010/module-02/course-02-the-fulcio-root-and-the-certificate-chain.md
+      - type: reading
+        title: "Certificate Transparency And The SCT"
+        path: sections/section-010/module-02/course-03-certificate-transparency-and-the-sct.md
+      - type: reading
+        title: "Reading A Rekor Entry"
+        path: sections/section-010/module-02/course-04-reading-a-rekor-entry.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Find The Rekor Entry Of A Release Signature Lab"
+        path: sections/section-010/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: keyless-flow
+        task_kind: investigation
+        tags: [rekor, log-index, bundle, certificate, verify-blob]
+        learning_goals:
+          - Read the log index and the identity from a published bundle
+          - Check that Rekor has the entry at that index
+          - Record the findings without signing again
+        resources:
+          - name: "Rekor overview"
+            url: https://docs.sigstore.dev/logging/overview/
+          - name: "The Sigstore bundle format"
+            url: https://docs.sigstore.dev/about/bundle/
+      - type: reading
+        title: "Summary"
+        path: sections/section-010/module-02/course-05-summary.md
+
+      - type: reading
+        title: "Trust Roots And Signing Configuration"
+        path: sections/section-010/module-03/course.md
+      - type: reading
+        title: "What The Trusted Root Contains"
+        path: sections/section-010/module-03/course-01-what-the-trusted-root-contains.md
+      - type: reading
+        title: "What The Signing Configuration Contains"
+        path: sections/section-010/module-03/course-02-what-the-signing-configuration-contains.md
+      - type: reading
+        title: "Validity Windows And Key Rotation"
+        path: sections/section-010/module-03/course-03-validity-windows-and-key-rotation.md
+      - type: reading
+        title: "How The Public-Good Instance Distributes Trust"
+        path: sections/section-010/module-03/course-04-how-the-public-good-instance-distributes-trust.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-03/labs/lab-01/question.md
+      - type: lab
+        title: "Repair A Verifier's Trusted Root Lab"
+        path: sections/section-010/module-03/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: keyless-flow
+        task_kind: troubleshooting
+        tags: [trusted-root, ctlogs, tlogs, validity-window, verify-blob]
+        learning_goals:
+          - Find why a good bundle fails with a verifier's trusted root
+          - Repair the trusted root without insecure flags
+          - Prove the bundle verifies for one identity only
+        resources:
+          - name: "Certificate authority overview"
+            url: https://docs.sigstore.dev/certificate_authority/overview/
+          - name: "Sigstore trust root and TUF"
+            url: https://docs.sigstore.dev/about/security/
+      - type: reading
+        title: "Summary"
+        path: sections/section-010/module-03/course-05-summary.md
 
       - type: reading
         title: Question
@@ -135,7 +219,9 @@ modules:
     description: >
       Signing an image keylessly with a Kubernetes service account token, the
       identity Fulcio writes for it, and running the signer as its own
-      workload so every signature names the job that made it.
+      workload so every signature names the job that made it. Also what is
+      attached to an image, signing the digest, and which Kubernetes
+      permissions let someone sign as a service account.
 
     content:
       - type: reading
@@ -172,8 +258,53 @@ modules:
           - name: "Configure service accounts for pods"
             url: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
       - type: reading
+        title: "Finding What Is Attached To An Image"
+        path: sections/section-020/module-01/course-03-finding-what-is-attached-to-an-image.md
+      - type: reading
+        title: "Signing A Digest The Safe Way"
+        path: sections/section-020/module-01/course-04-signing-a-digest-the-safe-way.md
+      - type: reading
         title: Summary
-        path: sections/section-020/module-01/course-03-summary.md
+        path: sections/section-020/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Control Who Can Sign As A Workload"
+        path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "Who Can Get A Token For A Service Account"
+        path: sections/section-020/module-02/course-01-who-can-get-a-token-for-a-service-account.md
+      - type: reading
+        title: "Roles That Let Someone Sign"
+        path: sections/section-020/module-02/course-02-roles-that-let-someone-sign.md
+      - type: reading
+        title: "Separate Signers By Namespace And Name"
+        path: sections/section-020/module-02/course-03-separate-signers-by-namespace-and-name.md
+      - type: reading
+        title: "Auditing Who Can Sign"
+        path: sections/section-020/module-02/course-04-auditing-who-can-sign.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Close The Door Around The Release Signer Lab"
+        path: sections/section-020/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: workload-identity
+        task_kind: troubleshooting
+        tags: [rbac, service-account, serviceaccounts-token, kubectl-auth-can-i, role-binding]
+        learning_goals:
+          - Find the binding that lets a developer sign as the release bot
+          - Replace it with a read-only binding
+          - Keep the pipeline account working
+        resources:
+          - name: "Using RBAC authorization"
+            url: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+          - name: "Configure service accounts for pods"
+            url: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+      - type: reading
+        title: "Summary"
+        path: sections/section-020/module-02/course-05-summary.md
 
       - type: reading
         title: Question
@@ -205,7 +336,8 @@ modules:
     description: >
       Exact identities against regular expressions, pinning the issuer,
       the GitHub Actions identity and its claims, and verifying a bundle
-      offline with a trusted root.
+      offline with a trusted root. Also checking a list of allowed signers,
+      and creating, verifying and enforcing attestations.
 
     content:
       - type: reading
@@ -245,8 +377,50 @@ modules:
           - name: "Certificate authority overview"
             url: https://docs.sigstore.dev/certificate_authority/overview/
       - type: reading
+        title: "Checking A List Of Allowed Signers"
+        path: sections/section-030/module-01/course-04-checking-a-list-of-allowed-signers.md
+      - type: reading
         title: Summary
-        path: sections/section-030/module-01/course-04-summary.md
+        path: sections/section-030/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Verify Claims About An Image, Not Only Its Signer"
+        path: sections/section-030/module-02/course.md
+      - type: reading
+        title: "What An Attestation Is"
+        path: sections/section-030/module-02/course-01-what-an-attestation-is.md
+      - type: reading
+        title: "Creating An Attestation Keylessly"
+        path: sections/section-030/module-02/course-02-creating-an-attestation-keylessly.md
+      - type: reading
+        title: "Verifying An Attestation And Its Content"
+        path: sections/section-030/module-02/course-03-verifying-an-attestation-and-its-content.md
+      - type: reading
+        title: "Enforcing Signers And Claims In A Cluster"
+        path: sections/section-030/module-02/course-04-enforcing-signers-and-claims-in-a-cluster.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Read And Check An Attestation Lab"
+        path: sections/section-030/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: verification
+        task_kind: investigation
+        tags: [attestation, verify-attestation, predicate, in-toto, certificate-identity]
+        learning_goals:
+          - Verify an attestation for one exact identity
+          - Read the predicate of the verified statement
+          - Record the digest, the claim and the signer
+        resources:
+          - name: "Attestations with cosign"
+            url: https://docs.sigstore.dev/cosign/verifying/attestation/
+          - name: "Policy controller"
+            url: https://docs.sigstore.dev/policy-controller/overview/
+      - type: reading
+        title: "Summary"
+        path: sections/section-030/module-02/course-05-summary.md
 
       - type: reading
         title: Question
@@ -280,7 +454,8 @@ modules:
     description: >
       Keyless signing in GitHub Actions with ambient credentials, and the same
       pattern in a Kubernetes Job: sign the digest, verify it in the same run,
-      and keep no key anywhere.
+      and keep no key anywhere. Also other CI providers and issuers such as
+      GitLab CI, reading signing failures, and keeping trust files current.
 
     content:
       - type: reading
@@ -317,8 +492,92 @@ modules:
           - name: "Verifying signatures"
             url: https://docs.sigstore.dev/cosign/verifying/verify/
       - type: reading
+        title: "Protecting The Signing Step"
+        path: sections/section-040/module-01/course-03-protecting-the-signing-step.md
+      - type: reading
+        title: "Verifying A CI Signature At Deploy"
+        path: sections/section-040/module-01/course-04-verifying-a-ci-signature-at-deploy.md
+      - type: reading
         title: Summary
-        path: sections/section-040/module-01/course-03-summary.md
+        path: sections/section-040/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Other CI Providers And Issuers"
+        path: sections/section-040/module-02/course.md
+      - type: reading
+        title: "How Fulcio Decides Which Issuers To Trust"
+        path: sections/section-040/module-02/course-01-how-fulcio-decides-which-issuers-to-trust.md
+      - type: reading
+        title: "GitLab CI Identities"
+        path: sections/section-040/module-02/course-02-gitlab-ci-identities.md
+      - type: reading
+        title: "Reading The Issuer And Subject Of Any Signature"
+        path: sections/section-040/module-02/course-03-reading-the-issuer-and-subject-of-any-signature.md
+      - type: reading
+        title: "Choosing The Flags For Each Provider"
+        path: sections/section-040/module-02/course-04-choosing-the-flags-for-each-provider.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Configure A Verifier For A Provider Lab"
+        path: sections/section-040/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: verification
+        task_kind: troubleshooting
+        tags: [issuer, certificate-identity, certificate-oidc-issuer, fulcio-configuration, pinning]
+        learning_goals:
+          - Discover the signer of a digest with a permissive command
+          - Pin the exact identity and issuer
+          - Show that other signers are rejected
+        resources:
+          - name: "OIDC usage in Fulcio"
+            url: https://docs.sigstore.dev/certificate_authority/oidc-in-fulcio/
+          - name: "Verifying signatures"
+            url: https://docs.sigstore.dev/cosign/verifying/verify/
+      - type: reading
+        title: "Summary"
+        path: sections/section-040/module-02/course-05-summary.md
+
+      - type: reading
+        title: "Operate Keyless Signing"
+        path: sections/section-040/module-03/course.md
+      - type: reading
+        title: "Planning The Move From Keys To Keyless"
+        path: sections/section-040/module-03/course-01-planning-the-move-from-keys-to-keyless.md
+      - type: reading
+        title: "Running Two Signers During A Migration"
+        path: sections/section-040/module-03/course-02-running-two-signers-during-a-migration.md
+      - type: reading
+        title: "Reading The Failures Of A Signing Job"
+        path: sections/section-040/module-03/course-03-reading-the-failures-of-a-signing-job.md
+      - type: reading
+        title: "Keeping Trust Current"
+        path: sections/section-040/module-03/course-04-keeping-trust-current.md
+      - type: reading
+        title: Question
+        path: sections/section-040/module-03/labs/lab-01/question.md
+      - type: lab
+        title: "Find Why Three Signers Failed Lab"
+        path: sections/section-040/module-03/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: ci
+        task_kind: troubleshooting
+        tags: [ci-job, events, token-audience, service-account, digest]
+        learning_goals:
+          - Read Job events and logs to find a failure cause
+          - Tell identity failures from image failures
+          - Report the causes without changing the Jobs
+        resources:
+          - name: "Sigstore CI quickstart"
+            url: https://docs.sigstore.dev/quickstart/quickstart-ci/
+          - name: "Jobs"
+            url: https://kubernetes.io/docs/concepts/workloads/controllers/job/
+      - type: reading
+        title: "Summary"
+        path: sections/section-040/module-03/course-05-summary.md
 
       - type: reading
         title: Question

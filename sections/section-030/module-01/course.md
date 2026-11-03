@@ -4,7 +4,7 @@ Three images sit in the registry, all validly signed. One was signed by the rele
 
 Keyless verification has two inputs that decide everything: the **identity** in the certificate's Subject Alternative Name and the **issuer** in Fulcio's issuer extension. cosign checks both, either as exact strings or as regular expressions. This module is about choosing and writing those two values so the check accepts exactly the signer you mean.
 
-The module has three parts. **Exact Identities, Regular Expressions And Issuers** compares what an exact identity, a loose regular expression and an anchored one accept on the three images. **GitHub Actions Identities** reads the identity and the claims in a certificate from GitHub Actions and verifies a public image. **Verifying Offline With A Bundle** verifies with only a file, its bundle and a trusted root. A graded lab follows the third part.
+The module has four parts. **Exact Identities, Regular Expressions And Issuers** compares what an exact identity, a loose regular expression and an anchored one accept on the three images. **GitHub Actions Identities** reads the identity and the claims in a certificate from GitHub Actions and verifies a public image. **Verifying Offline With A Bundle** verifies with only a file, its bundle and a trusted root. **Checking A List Of Allowed Signers** writes one check for several exact signers. A graded lab follows the third part. The fourth part comes after the lab.
 
 ## Learning objectives
 

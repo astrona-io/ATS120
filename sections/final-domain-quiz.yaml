@@ -286,3 +286,279 @@ questions:
         explanation: "Not correct. Signing works alone. The check is a safeguard."
     correct_option: b
     explanation: "Correct. The verify step uses the identity the deployment demands."
+
+  - id: ats120-final-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the Fulcio inputs"
+    source_readings:
+      - sections/section-010/module-02/course-01-the-request-fulcio-receives.md
+    prompt: "What does the proof of possession in a Fulcio request prove?"
+    options:
+      - id: a
+        text: "That the requester owns the email address in the token."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+      - id: b
+        text: "That the requester may sign any image."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+      - id: c
+        text: "That the OIDC provider is trusted by Fulcio."
+        explanation: "Not correct. The correct answer is: That the requester holds the private key that matches the public key in the request."
+      - id: d
+        text: "That the requester holds the private key that matches the public key in the request."
+        explanation: "Correct. That the requester holds the private key that matches the public key in the request."
+    correct_option: d
+    explanation: "Correct. That the requester holds the private key that matches the public key in the request."
+
+  - id: ats120-final-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain key rotation in a trusted root"
+    source_readings:
+      - sections/section-010/module-03/course-03-validity-windows-and-key-rotation.md
+    prompt: "Why does a trusted root keep an old log key with an end time after a rotation?"
+    options:
+      - id: a
+        text: "Because cosign refuses a file without an end time."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+      - id: b
+        text: "So that the certificate lives longer than ten minutes."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+      - id: c
+        text: "So that signatures made while that key was valid still verify."
+        explanation: "Correct. So that signatures made while that key was valid still verify."
+      - id: d
+        text: "So that the old key can sign new entries."
+        explanation: "Not correct. The correct answer is: So that signatures made while that key was valid still verify."
+    correct_option: c
+    explanation: "Correct. So that signatures made while that key was valid still verify."
+
+  - id: ats120-final-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Sign a recorded digest"
+    source_readings:
+      - sections/section-020/module-01/course.md
+    prompt: "Why should a signing Job use a digest recorded at build time?"
+    options:
+      - id: a
+        text: "Fulcio only accepts digests in tokens."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing."
+      - id: b
+        text: "A tag can move between the build and the signing."
+        explanation: "Correct. A tag can move between the build and the signing."
+      - id: c
+        text: "Digests are shorter than tags."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing."
+      - id: d
+        text: "Registries refuse tags."
+        explanation: "Not correct. The correct answer is: A tag can move between the build and the signing."
+    correct_option: b
+    explanation: "Correct. A tag can move between the build and the signing."
+
+  - id: ats120-final-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the permissions that allow signing"
+    source_readings:
+      - sections/section-020/module-02/course.md
+    prompt: "Which two permissions in a namespace allow signing as a service account?"
+    options:
+      - id: a
+        text: "create on pods and create on serviceaccounts/token"
+        explanation: "Correct. create on pods and create on serviceaccounts/token"
+      - id: b
+        text: "get on secrets and list on pods"
+        explanation: "Not correct. The correct answer is: create on pods and create on serviceaccounts/token"
+      - id: c
+        text: "update on configmaps and delete on jobs"
+        explanation: "Not correct. The correct answer is: create on pods and create on serviceaccounts/token"
+      - id: d
+        text: "get on namespaces and list on nodes"
+        explanation: "Not correct. The correct answer is: create on pods and create on serviceaccounts/token"
+    correct_option: a
+    explanation: "Correct. create on pods and create on serviceaccounts/token"
+
+  - id: ats120-final-q17
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Limit signing"
+    source_readings:
+      - sections/section-020/module-02/course.md
+    prompt: "A developer must read pods in the signing namespace but not sign. Which binding fits?"
+    options:
+      - id: a
+        text: "The edit cluster role."
+        explanation: "Not correct. The correct answer is: The view cluster role."
+      - id: b
+        text: "The admin cluster role."
+        explanation: "Not correct. The correct answer is: The view cluster role."
+      - id: c
+        text: "No binding is possible."
+        explanation: "Not correct. The correct answer is: The view cluster role."
+      - id: d
+        text: "The view cluster role."
+        explanation: "Correct. The view cluster role."
+    correct_option: d
+    explanation: "Correct. The view cluster role."
+
+  - id: ats120-final-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check a list of signers"
+    source_readings:
+      - sections/section-030/module-01/course-04-checking-a-list-of-allowed-signers.md
+    prompt: "What should each entry in a list of allowed signers hold?"
+    options:
+      - id: a
+        text: "Only the issuer."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer."
+      - id: b
+        text: "The public key of the signer."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer."
+      - id: c
+        text: "An exact identity and the exact issuer."
+        explanation: "Correct. An exact identity and the exact issuer."
+      - id: d
+        text: "A regular expression for the identity."
+        explanation: "Not correct. The correct answer is: An exact identity and the exact issuer."
+    correct_option: c
+    explanation: "Correct. An exact identity and the exact issuer."
+
+  - id: ats120-final-q19
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an attestation"
+    source_readings:
+      - sections/section-030/module-02/course.md
+    prompt: "What does the subject of an in-toto statement hold?"
+    options:
+      - id: a
+        text: "The registry credentials."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, with digests."
+      - id: b
+        text: "The artifacts the statement is about, with digests."
+        explanation: "Correct. The artifacts the statement is about, with digests."
+      - id: c
+        text: "The identity of the signer."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, with digests."
+      - id: d
+        text: "The Rekor log index."
+        explanation: "Not correct. The correct answer is: The artifacts the statement is about, with digests."
+    correct_option: b
+    explanation: "Correct. The artifacts the statement is about, with digests."
+
+  - id: ats120-final-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Check claims"
+    source_readings:
+      - sections/section-030/module-02/course.md
+    prompt: "Why must a gate check the predicate as well as the signature?"
+    options:
+      - id: a
+        text: "A valid signature does not make the claim true."
+        explanation: "Correct. A valid signature does not make the claim true."
+      - id: b
+        text: "The predicate is encrypted."
+        explanation: "Not correct. The correct answer is: A valid signature does not make the claim true."
+      - id: c
+        text: "The signature covers only the subject."
+        explanation: "Not correct. The correct answer is: A valid signature does not make the claim true."
+      - id: d
+        text: "Fulcio does not certify attestations."
+        explanation: "Not correct. The correct answer is: A valid signature does not make the claim true."
+    correct_option: a
+    explanation: "Correct. A valid signature does not make the claim true."
+
+  - id: ats120-final-q21
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Protect the signing step"
+    source_readings:
+      - sections/section-040/module-01/course.md
+    prompt: "Where should id-token: write be set in a workflow?"
+    options:
+      - id: a
+        text: "On every job."
+        explanation: "Not correct. The correct answer is: On the signing job only."
+      - id: b
+        text: "Only in the repository settings."
+        explanation: "Not correct. The correct answer is: On the signing job only."
+      - id: c
+        text: "In the cosign command."
+        explanation: "Not correct. The correct answer is: On the signing job only."
+      - id: d
+        text: "On the signing job only."
+        explanation: "Correct. On the signing job only."
+    correct_option: d
+    explanation: "Correct. On the signing job only."
+
+  - id: ats120-final-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose issuer values"
+    source_readings:
+      - sections/section-040/module-02/course.md
+    prompt: "Which Fulcio endpoint lists the configuration with the issuers?"
+    options:
+      - id: a
+        text: "/api/v2/trustBundle"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+      - id: b
+        text: "/healthz"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+      - id: c
+        text: "/api/v2/configuration"
+        explanation: "Correct. /api/v2/configuration"
+      - id: d
+        text: "/api/v2/signingCert"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+    correct_option: c
+    explanation: "Correct. /api/v2/configuration"
+
+  - id: ats120-final-q23
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Pin after discovery"
+    source_readings:
+      - sections/section-040/module-02/course.md
+    prompt: "What is the right use of .* for identity and issuer in cosign verify?"
+    options:
+      - id: a
+        text: "A way to skip the log."
+        explanation: "Not correct. The correct answer is: Discovery for reading only."
+      - id: b
+        text: "Discovery for reading only."
+        explanation: "Correct. Discovery for reading only."
+      - id: c
+        text: "A permanent deploy check."
+        explanation: "Not correct. The correct answer is: Discovery for reading only."
+      - id: d
+        text: "A faster production check."
+        explanation: "Not correct. The correct answer is: Discovery for reading only."
+    correct_option: b
+    explanation: "Correct. Discovery for reading only."
+
+  - id: ats120-final-q24
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Plan a migration"
+    source_readings:
+      - sections/section-040/module-03/course.md
+    prompt: "Which step comes last when moving from a key to keyless?"
+    options:
+      - id: a
+        text: "Deleting the key everywhere."
+        explanation: "Correct. Deleting the key everywhere."
+      - id: b
+        text: "Adding the keyless signer."
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+      - id: c
+        text: "Signing with both methods."
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+      - id: d
+        text: "Moving the verifiers."
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+    correct_option: a
+    explanation: "Correct. Deleting the key everywhere."

@@ -4,7 +4,7 @@ The release pipeline signs every image with a key pair. The private key and its 
 
 Two kinds of pipeline matter here. In **GitHub Actions**, the job asks GitHub's OpenID Connect (OIDC) provider for an ID token; that works without any stored secret once the workflow has the permission `id-token: write`. In **Kubernetes**, a Job gets a projected service account token for its own service account. Both are **ambient credentials**: the platform provides them, nobody stores them.
 
-The module has two parts. **Keyless Signing In GitHub Actions** walks through a complete signing workflow and the identity it produces; a lab cannot run GitHub, so this part explains it with the real workflow file. **A Kubernetes Job As The CI Signer** builds the same pattern in the cluster: sign the digest, verify it in the same run, no Secret. A graded lab follows the second part.
+The module has four parts. **Keyless Signing In GitHub Actions** walks through a complete signing workflow and the identity it produces; a lab cannot run GitHub, so this part explains it with the real workflow file. **A Kubernetes Job As The CI Signer** builds the same pattern in the cluster: sign the digest, verify it in the same run, no Secret. **Protecting The Signing Step** lists the controls that decide who can reach the token. **Verifying A CI Signature At Deploy** writes the verification flags for both kinds of signature. A graded lab follows the second part. The last two parts come after the lab.
 
 ## Learning objectives
 

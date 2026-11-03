@@ -1,0 +1,56 @@
+# Configure A Verifier For A Provider
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-120-lab-040-02"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+bootstrap:
+  init:
+    - name: "install-sigstore"
+      description: "Installs the registry, the private Sigstore stack and the workstation, and builds the trust files"
+      type: "file"
+      source: "bootstrap/01-install-sigstore.sh"
+    - name: "ats-120-lab-040-02-setup"
+      description: "Signs the release digest as ci-builder and writes wrong verifier settings"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+testing:
+  init:
+    - name: "wait-for-sigstore"
+      description: "Waits until Fulcio, Rekor and the workstation answer"
+      type: "file"
+      source: "testing/wait-for-sigstore.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+validation:
+  scripts:
+    - name: "validate-settings-verify"
+      description: "Confirms the settings in verifier-settings verify the release digest"
+      type: "file"
+      source: "validation/validate-settings-verify.sh"
+    - name: "validate-settings-exact"
+      description: "Confirms the identity and issuer are exact strings for ci-builder and this cluster"
+      type: "file"
+      source: "validation/validate-settings-exact.sh"
+    - name: "validate-other-signer-rejected"
+      description: "Confirms the settings reject ci/release-bot and a foreign issuer"
+      type: "file"
+      source: "validation/validate-other-signer-rejected.sh"
+teardown:
+  keepCluster: false
+runtime:
+  kind:
+    preloadImages:
+      - alpine:3.22
+      - ghcr.io/sigstore/cosign/cosign:v3.1.4
+      - registry:3.1.2
+---
+estimated_duration: 20m
+---

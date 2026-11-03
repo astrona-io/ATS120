@@ -4,7 +4,7 @@ A team signs its releases with a key pair it created three years ago. The privat
 
 **Keyless signing** signs with an **ephemeral key**: a key pair that cosign, the Sigstore command-line tool, creates for one signature and then throws away. To make that key mean something, Fulcio, the Sigstore certificate authority, issues a certificate that binds the key to an identity. Fulcio learns the identity from an **OpenID Connect (OIDC) identity token**, a signed statement from an identity provider that says who the signer is.
 
-This module follows one keyless signature from start to end. **From Long-Lived Keys To Short-Lived Certificates** explains the flow and the services that take part. **Reading An OIDC Identity Token** opens the token your workstation uses and reads its claims. **What Fulcio Puts In A Certificate** signs a file, opens the certificate, and explains why the signature stays valid after the certificate expires. A graded lab follows the third part.
+This module follows one keyless signature from start to end. **From Long-Lived Keys To Short-Lived Certificates** explains the flow and the services that take part. **Reading An OIDC Identity Token** opens the token your workstation uses and reads its claims. **What Fulcio Puts In A Certificate** signs a file, opens the certificate, and looks at the certificate. **Why The Signature Outlives The Certificate** explains the integrated time and why an old signature still verifies. A graded lab follows the third part. The fourth part comes after the lab.
 
 ## Learning objectives
 

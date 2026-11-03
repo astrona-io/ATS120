@@ -13,21 +13,32 @@ You start with your own cluster's identities: exact identities, regular expressi
 - The identity and claims in a GitHub Actions certificate, and the flags that check them.
 - Verifying a public image that was signed in GitHub Actions.
 - Verifying a bundle offline with a trusted root.
+- Checking a signature against a list of allowed signers.
+- Creating, verifying and reading attestations, and how a cluster can enforce signers and claims at admission.
 
 ## The learning path
 
-The module starts at its landing page, which also launches the playground. The playground has the private Sigstore stack and three images, each signed by a different identity, so you can compare what different checks accept.
+Each module starts at its landing page, which also launches that module's playground. The playground has the private Sigstore stack and three images, each signed by a different identity, so you can compare what different checks accept.
 
 ### 1. Verify Exactly Who Signed
 
 1. Exact Identities, Regular Expressions And Issuers
 2. GitHub Actions Identities
 3. Verifying Offline With A Bundle, followed by the lab **Tighten A Verification Script**
-4. Summary
+4. Checking A List Of Allowed Signers
+5. Summary
+
+### 2. Verify Claims About An Image, Not Only Its Signer
+
+1. What An Attestation Is
+2. Creating An Attestation Keylessly
+3. Verifying An Attestation And Its Content
+4. Enforcing Signers And Claims In A Cluster, followed by the lab **Read And Check An Attestation**
+5. Summary
 
 ## Section capstone: Verify Which Repository Built A Public Image
 
-The capstone is one graded scenario that combines the module. You write a check for a public image signed in GitHub Actions that accepts exactly one repository, where the obvious organisation-wide check accepts its neighbours too. The capstone needs outbound internet. Work it after the module lab.
+The capstone is one graded scenario that combines the modules. You write a check for a public image signed in GitHub Actions that accepts exactly one repository, where the obvious organisation-wide check accepts its neighbours too. The capstone needs outbound internet. Work it after the module labs.
 
 Start the capstone:
 

@@ -243,3 +243,233 @@ questions:
         explanation: "Not correct. The new check is keyless and uses no key."
     correct_option: c
     explanation: "Correct. Delete the Secret and the legacy Job."
+
+  - id: ats120-040-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Limit the id-token permission"
+    source_readings:
+      - sections/section-040/module-01/course-03-protecting-the-signing-step.md
+    prompt: "Where should id-token: write be set in a GitHub Actions workflow?"
+    options:
+      - id: a
+        text: "On the signing job only."
+        explanation: "Correct. On the signing job only."
+      - id: b
+        text: "On every job"
+        explanation: "Not correct. The correct answer is: On the signing job only."
+      - id: c
+        text: "Only in the repository settings"
+        explanation: "Not correct. The correct answer is: On the signing job only."
+      - id: d
+        text: "In the cosign command"
+        explanation: "Not correct. The correct answer is: On the signing job only."
+    correct_option: a
+    explanation: "Correct. On the signing job only."
+
+  - id: ats120-040-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pin third-party actions"
+    source_readings:
+      - sections/section-040/module-01/course-03-protecting-the-signing-step.md
+    prompt: "Why pin a third-party action to a commit hash in the signing job?"
+    options:
+      - id: a
+        text: "A hash makes the workflow run faster."
+        explanation: "Not correct. The correct answer is: A tag can move to new code that then receives the ID token."
+      - id: b
+        text: "Tags are not allowed in workflows."
+        explanation: "Not correct. The correct answer is: A tag can move to new code that then receives the ID token."
+      - id: c
+        text: "A hash replaces the permission block."
+        explanation: "Not correct. The correct answer is: A tag can move to new code that then receives the ID token."
+      - id: d
+        text: "A tag can move to new code that then receives the ID token."
+        explanation: "Correct. A tag can move to new code that then receives the ID token."
+    correct_option: d
+    explanation: "Correct. A tag can move to new code that then receives the ID token."
+
+  - id: ats120-040-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify a GitHub Actions signature"
+    source_readings:
+      - sections/section-040/module-01/course-04-verifying-a-ci-signature-at-deploy.md
+    prompt: "Which issuer do you pin when verifying a GitHub Actions signature?"
+    options:
+      - id: a
+        text: "https://accounts.google.com"
+        explanation: "Not correct. The correct answer is: https://token.actions.githubusercontent.com"
+      - id: b
+        text: "https://gitlab.com"
+        explanation: "Not correct. The correct answer is: https://token.actions.githubusercontent.com"
+      - id: c
+        text: "https://token.actions.githubusercontent.com"
+        explanation: "Correct. https://token.actions.githubusercontent.com"
+      - id: d
+        text: "https://github.com"
+        explanation: "Not correct. The correct answer is: https://token.actions.githubusercontent.com"
+    correct_option: c
+    explanation: "Correct. https://token.actions.githubusercontent.com"
+
+  - id: ats120-040-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Anchor a regular expression"
+    source_readings:
+      - sections/section-040/module-01/course-04-verifying-a-ci-signature-at-deploy.md
+    prompt: "Why anchor a regular expression for the ref with ^ and $?"
+    options:
+      - id: a
+        text: "Anchors remove the need for the issuer."
+        explanation: "Not correct. The correct answer is: Without anchors, a longer string that contains the pattern also passes."
+      - id: b
+        text: "Without anchors, a longer string that contains the pattern also passes."
+        explanation: "Correct. Without anchors, a longer string that contains the pattern also passes."
+      - id: c
+        text: "Anchors make cosign faster."
+        explanation: "Not correct. The correct answer is: Without anchors, a longer string that contains the pattern also passes."
+      - id: d
+        text: "Anchors are required by Fulcio."
+        explanation: "Not correct. The correct answer is: Without anchors, a longer string that contains the pattern also passes."
+    correct_option: b
+    explanation: "Correct. Without anchors, a longer string that contains the pattern also passes."
+
+  - id: ats120-040-q15
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe an issuer entry"
+    source_readings:
+      - sections/section-040/module-02/course-01-how-fulcio-decides-which-issuers-to-trust.md
+    prompt: "What does the type of a Fulcio issuer entry decide?"
+    options:
+      - id: a
+        text: "How the token's claims become the certificate subject and extensions."
+        explanation: "Correct. How the token's claims become the certificate subject and extensions."
+      - id: b
+        text: "How long the certificate lives."
+        explanation: "Not correct. The correct answer is: How the token's claims become the certificate subject and extensions."
+      - id: c
+        text: "Which registry stores the signature."
+        explanation: "Not correct. The correct answer is: How the token's claims become the certificate subject and extensions."
+      - id: d
+        text: "Which Rekor shard is used."
+        explanation: "Not correct. The correct answer is: How the token's claims become the certificate subject and extensions."
+    correct_option: a
+    explanation: "Correct. How the token's claims become the certificate subject and extensions."
+
+  - id: ats120-040-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the issuers of a Fulcio"
+    source_readings:
+      - sections/section-040/module-02/course-01-how-fulcio-decides-which-issuers-to-trust.md
+    prompt: "Which Fulcio endpoint lists the configuration, including the issuers?"
+    options:
+      - id: a
+        text: "/api/v2/signingCert"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+      - id: b
+        text: "/api/v2/trustBundle"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+      - id: c
+        text: "/healthz"
+        explanation: "Not correct. The correct answer is: /api/v2/configuration"
+      - id: d
+        text: "/api/v2/configuration"
+        explanation: "Correct. /api/v2/configuration"
+    correct_option: d
+    explanation: "Correct. /api/v2/configuration"
+
+  - id: ats120-040-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use GitLab id_tokens"
+    source_readings:
+      - sections/section-040/module-02/course-02-gitlab-ci-identities.md
+    prompt: "Which variable does cosign read the token from in a GitLab CI job configured with id_tokens as above?"
+    options:
+      - id: a
+        text: "CI_JOB_TOKEN"
+        explanation: "Not correct. The correct answer is: SIGSTORE_ID_TOKEN"
+      - id: b
+        text: "GITLAB_TOKEN"
+        explanation: "Not correct. The correct answer is: SIGSTORE_ID_TOKEN"
+      - id: c
+        text: "SIGSTORE_ID_TOKEN"
+        explanation: "Correct. SIGSTORE_ID_TOKEN"
+      - id: d
+        text: "COSIGN_PASSWORD"
+        explanation: "Not correct. The correct answer is: SIGSTORE_ID_TOKEN"
+    correct_option: c
+    explanation: "Correct. SIGSTORE_ID_TOKEN"
+
+  - id: ats120-040-q18
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Discover and pin"
+    source_readings:
+      - sections/section-040/module-02/course-03-reading-the-issuer-and-subject-of-any-signature.md
+    prompt: "What is the right use of cosign verify with .* for the identity and the issuer?"
+    options:
+      - id: a
+        text: "A way to skip the transparency log."
+        explanation: "Not correct. The correct answer is: Discovery for reading only, never as the check."
+      - id: b
+        text: "Discovery for reading only, never as the check."
+        explanation: "Correct. Discovery for reading only, never as the check."
+      - id: c
+        text: "A permanent check in the deploy script."
+        explanation: "Not correct. The correct answer is: Discovery for reading only, never as the check."
+      - id: d
+        text: "A faster check for production."
+        explanation: "Not correct. The correct answer is: Discovery for reading only, never as the check."
+    correct_option: b
+    explanation: "Correct. Discovery for reading only, never as the check."
+
+  - id: ats120-040-q19
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Plan a migration from keys"
+    source_readings:
+      - sections/section-040/module-03/course-01-planning-the-move-from-keys-to-keyless.md
+    prompt: "Which step comes last when moving from a signing key to keyless?"
+    options:
+      - id: a
+        text: "Deleting the key everywhere."
+        explanation: "Correct. Deleting the key everywhere."
+      - id: b
+        text: "Adding the keyless signer"
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+      - id: c
+        text: "Signing with both methods"
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+      - id: d
+        text: "Moving the verifiers"
+        explanation: "Not correct. The correct answer is: Deleting the key everywhere."
+    correct_option: a
+    explanation: "Correct. Deleting the key everywhere."
+
+  - id: ats120-040-q20
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read a failed signing Job"
+    source_readings:
+      - sections/section-040/module-03/course-03-reading-the-failures-of-a-signing-job.md
+    prompt: "A signing Job has no pods. Where do you look for the cause?"
+    options:
+      - id: a
+        text: "In the log of the Fulcio pod only."
+        explanation: "Not correct. The correct answer is: In the events of the Job, for example a missing service account."
+      - id: b
+        text: "In the Rekor log."
+        explanation: "Not correct. The correct answer is: In the events of the Job, for example a missing service account."
+      - id: c
+        text: "In the trusted root."
+        explanation: "Not correct. The correct answer is: In the events of the Job, for example a missing service account."
+      - id: d
+        text: "In the events of the Job, for example a missing service account."
+        explanation: "Correct. In the events of the Job, for example a missing service account."
+    correct_option: d
+    explanation: "Correct. In the events of the Job, for example a missing service account."
