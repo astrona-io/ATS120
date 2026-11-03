@@ -125,6 +125,10 @@ modules:
             url: https://docs.sigstore.dev/certificate_authority/oidc-in-fulcio/
           - name: "Projected volumes: service account tokens"
             url: https://kubernetes.io/docs/concepts/storage/projected-volumes/
+      - type: quiz
+        title: "Knowledge Check: How Keyless Signing Works"
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
 
   - id: module-020
     title: "Signing With A Workload Identity"
@@ -191,6 +195,10 @@ modules:
             url: https://docs.sigstore.dev/cosign/verifying/verify/
           - name: "Projected volumes: service account tokens"
             url: https://kubernetes.io/docs/concepts/storage/projected-volumes/
+      - type: quiz
+        title: "Knowledge Check: Signing With A Workload Identity"
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
 
   - id: module-030
     title: "Verifying Identities Precisely"
@@ -262,6 +270,10 @@ modules:
             url: https://docs.sigstore.dev/cosign/verifying/verify/
           - name: "About security hardening with OpenID Connect"
             url: https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect
+      - type: quiz
+        title: "Knowledge Check: Verifying Identities Precisely"
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
 
   - id: module-040
     title: "Keyless Signing In CI"
@@ -328,3 +340,11 @@ modules:
             url: https://docs.sigstore.dev/quickstart/quickstart-ci/
           - name: "Signing containers"
             url: https://docs.sigstore.dev/cosign/signing/overview/
+      - type: quiz
+        title: "Knowledge Check: Keyless Signing In CI"
+        path: sections/section-040/quiz.yaml
+        pass_score: 70
+      - type: quiz
+        title: "Final Domain Quiz"
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70

@@ -1,0 +1,245 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats120-030
+course_id: ATS120
+exam_code: SIGSTORE
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "Verifying Identities Precisely"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats120-030-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the strictest identity check"
+    source_readings:
+      - sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+    prompt: "Which flag accepts only a certificate with exactly one identity string?"
+    options:
+      - id: a
+        text: "--certificate-identity-regexp"
+        explanation: "Not correct. It takes a regular expression and can match more."
+      - id: b
+        text: "--certificate-oidc-issuer-regexp"
+        explanation: "Not correct. It is for the issuer and takes a pattern."
+      - id: c
+        text: "--certificate-identity"
+        explanation: "Correct. It compares the SAN as an exact string."
+      - id: d
+        text: "--allow-http-registry"
+        explanation: "Not correct. It allows a registry without TLS and has nothing to do with identity."
+    correct_option: c
+    explanation: "Correct. It compares the SAN as an exact string."
+
+  - id: ats120-030-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the problem of an unanchored regular expression"
+    source_readings:
+      - sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+    prompt: "The pattern release-bot is used as an identity regular expression. What is wrong with it?"
+    options:
+      - id: a
+        text: "It is too strict and rejects the real release-bot."
+        explanation: "Not correct. It accepts the real one and many others."
+      - id: b
+        text: "It is not valid Go regular expression syntax."
+        explanation: "Not correct. The syntax is valid. The pattern is too loose."
+      - id: c
+        text: "It checks the issuer instead of the identity."
+        explanation: "Not correct. The flag checks the identity."
+      - id: d
+        text: "It matches anywhere in the URI, so a release-bot in any namespace is accepted."
+        explanation: "Correct. Anchor the pattern with ^ and $."
+    correct_option: d
+    explanation: "Correct. Anchor the pattern with ^ and $."
+
+  - id: ats120-030-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write an anchored pattern"
+    source_readings:
+      - sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+    prompt: "Why is each literal dot written as \\. in an anchored identity pattern?"
+    options:
+      - id: a
+        text: "An unescaped dot matches any character."
+        explanation: "Correct. kubernetes.io would also match kubernetesXio."
+      - id: b
+        text: "A dot ends the regular expression."
+        explanation: "Not correct. A dot does not end a pattern."
+      - id: c
+        text: "cosign removes unescaped dots from URLs."
+        explanation: "Not correct. cosign does not change the pattern."
+      - id: d
+        text: "Escaped dots make the check run offline."
+        explanation: "Not correct. Escaping has no effect on the network."
+    correct_option: a
+    explanation: "Correct. kubernetes.io would also match kubernetesXio."
+
+  - id: ats120-030-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pin the issuer"
+    source_readings:
+      - sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+    prompt: "A check uses --certificate-oidc-issuer-regexp '.*' and passes every test in a single-issuer playground. What is the risk?"
+    options:
+      - id: a
+        text: "It rejects all signatures in a production cluster."
+        explanation: "Not correct. The pattern accepts everything."
+      - id: b
+        text: "It also accepts an identity from any other issuer that Fulcio trusts."
+        explanation: "Correct. Only a pinned issuer tells the clusters apart."
+      - id: c
+        text: "It disables the transparency log check."
+        explanation: "Not correct. The log check is separate."
+      - id: d
+        text: "It changes the identity in the certificate."
+        explanation: "Not correct. Verification never changes the certificate."
+    correct_option: b
+    explanation: "Correct. Only a pinned issuer tells the clusters apart."
+
+  - id: ats120-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the claims in a GitHub Actions certificate"
+    source_readings:
+      - sections/section-030/module-01/course-02-github-actions-identities.md
+    prompt: "What is the identity in the SAN of a certificate from a GitHub Actions workflow?"
+    options:
+      - id: a
+        text: "The GitHub user name of the person who pushed."
+        explanation: "Not correct. The identity is the workflow URL."
+      - id: b
+        text: "The name of the runner machine."
+        explanation: "Not correct. Runner names are not the identity."
+      - id: c
+        text: "The SHA-256 digest of the image."
+        explanation: "Not correct. The digest is what is signed, not the identity."
+      - id: d
+        text: "The URL of the workflow file at the reference it ran from."
+        explanation: "Correct. The form is https://github.com/<owner>/<repository>/.github/workflows/<file>@<ref>."
+    correct_option: d
+    explanation: "Correct. The form is https://github.com/<owner>/<repository>/.github/workflows/<file>@<ref>."
+
+  - id: ats120-030-q06
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Narrow a check to one repository"
+    source_readings:
+      - sections/section-030/module-01/course-02-github-actions-identities.md
+    prompt: "An organisation-wide pattern accepts two controller images from the same organisation. Which flag limits it to one repository?"
+    options:
+      - id: a
+        text: "--certificate-github-workflow-repository"
+        explanation: "Correct. It checks the repository claim in the certificate."
+      - id: b
+        text: "--certificate-oidc-issuer"
+        explanation: "Not correct. The issuer is the same for all repositories."
+      - id: c
+        text: "--allow-http-registry"
+        explanation: "Not correct. It only concerns TLS on the registry."
+      - id: d
+        text: "--trusted-root"
+        explanation: "Not correct. It selects the trust keys and not the repository."
+    correct_option: a
+    explanation: "Correct. It checks the repository claim in the certificate."
+
+  - id: ats120-030-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Handle reusable workflows"
+    source_readings:
+      - sections/section-030/module-01/course-02-github-actions-identities.md
+    prompt: "A release calls a reusable workflow from another repository. What is the identity in the certificate?"
+    options:
+      - id: a
+        text: "The URL of the calling repository."
+        explanation: "Not correct. The identity is the reusable workflow URL."
+      - id: b
+        text: "The URL of the reusable workflow, so the source repository claim must be checked too."
+        explanation: "Correct. The identity alone does not name the calling repository."
+      - id: c
+        text: "The URL of the registry."
+        explanation: "Not correct. The registry is not part of the identity."
+      - id: d
+        text: "No identity is written."
+        explanation: "Not correct. Fulcio always writes an identity."
+    correct_option: b
+    explanation: "Correct. The identity alone does not name the calling repository."
+
+  - id: ats120-030-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what makes offline verification possible"
+    source_readings:
+      - sections/section-030/module-01/course-03-verifying-offline-with-a-bundle.md
+    prompt: "Why can cosign verify-blob with a bundle and a trusted root work without a network?"
+    options:
+      - id: a
+        text: "cosign keeps a copy of Fulcio and Rekor in memory."
+        explanation: "Not correct. cosign has no copy of the services."
+      - id: b
+        text: "Offline verification skips the log and the certificate."
+        explanation: "Not correct. Both are checked from the bundle."
+      - id: c
+        text: "The bundle holds the certificate, the signature and the Rekor entry with its proof, and the trusted root holds the keys to check them."
+        explanation: "Correct. No request to Fulcio or Rekor is needed."
+      - id: d
+        text: "The trusted root contains the signature of the file."
+        explanation: "Not correct. The signature is in the bundle."
+    correct_option: c
+    explanation: "Correct. No request to Fulcio or Rekor is needed."
+
+  - id: ats120-030-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Keep the trusted root current"
+    source_readings:
+      - sections/section-030/module-01/course-03-verifying-offline-with-a-bundle.md
+    prompt: "Fulcio rotates its root key. What must an offline verifier do?"
+    options:
+      - id: a
+        text: "Update its trusted root, or it rejects new valid signatures."
+        explanation: "Correct. New keys are added to a new trusted root."
+      - id: b
+        text: "Nothing, because old roots verify all new signatures."
+        explanation: "Not correct. An old root does not hold the new key."
+      - id: c
+        text: "Fetch the bundle again from Rekor."
+        explanation: "Not correct. The bundle does not contain the new root."
+      - id: d
+        text: "Turn off the identity check."
+        explanation: "Not correct. Never loosen the check to work around a stale root."
+    correct_option: a
+    explanation: "Correct. New keys are added to a new trusted root."
+
+  - id: ats120-030-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Treat a verification script as a policy"
+    source_readings:
+      - sections/section-030/module-01/course-03-verifying-offline-with-a-bundle.md
+    prompt: "Why does the verify script start cosign with exec?"
+    options:
+      - id: a
+        text: "exec makes cosign run faster."
+        explanation: "Not correct. Speed is not the reason."
+      - id: b
+        text: "The script then returns the exit code of cosign verify, so a deployment step can rely on it."
+        explanation: "Correct. Exit code 0 means the image was accepted."
+      - id: c
+        text: "exec lets cosign skip the trusted root."
+        explanation: "Not correct. The trusted root is still used."
+      - id: d
+        text: "exec stores the result in the bundle."
+        explanation: "Not correct. Nothing is stored."
+    correct_option: b
+    explanation: "Correct. Exit code 0 means the image was accepted."

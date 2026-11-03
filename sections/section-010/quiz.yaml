@@ -1,0 +1,245 @@
+# Knowledge check for section 010. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats120-010
+course_id: ATS120
+exam_code: SIGSTORE
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-010
+  title: "How Keyless Signing Works"
+placement:
+  position: after
+  reading: sections/section-010/capstone/labs/lab-01/question.md
+questions:
+  - id: ats120-010-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the problems of long-lived signing keys"
+    source_readings:
+      - sections/section-010/module-01/course-01-from-keys-to-certificates.md
+    prompt: "Which problem does keyless signing remove by never keeping a signing key?"
+    options:
+      - id: a
+        text: "A leaked private key puts every signature it ever made in doubt."
+        explanation: "Correct. With no long-lived key, there is nothing to leak or revoke."
+      - id: b
+        text: "A public key does not say who holds the private key, so no certificate can ever fix it."
+        explanation: "Not correct. Keyless signing fixes this with a certificate that names the identity."
+      - id: c
+        text: "A signature cannot be stored in a transparency log."
+        explanation: "Not correct. Keyless signatures are stored in Rekor."
+      - id: d
+        text: "An artifact cannot be signed twice."
+        explanation: "Not correct. Signing the same artifact twice is possible and is not the problem here."
+    correct_option: a
+    explanation: "Correct. With no long-lived key, there is nothing to leak or revoke."
+
+  - id: ats120-010-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name what each service does in the keyless flow"
+    source_readings:
+      - sections/section-010/module-01/course-01-from-keys-to-certificates.md
+    prompt: "Which service issues the certificate that is valid for about ten minutes?"
+    options:
+      - id: a
+        text: "Rekor."
+        explanation: "Not correct. Rekor records signatures. It does not issue certificates."
+      - id: b
+        text: "Fulcio."
+        explanation: "Correct. Fulcio is the Sigstore certificate authority."
+      - id: c
+        text: "The OIDC provider."
+        explanation: "Not correct. The OIDC provider issues the identity token, not the certificate."
+      - id: d
+        text: "The certificate transparency log."
+        explanation: "Not correct. The CT log records certificates that Fulcio issued."
+    correct_option: b
+    explanation: "Correct. Fulcio is the Sigstore certificate authority."
+
+  - id: ats120-010-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell the two logs apart"
+    source_readings:
+      - sections/section-010/module-01/course-01-from-keys-to-certificates.md
+    prompt: "What does Rekor record in the keyless flow?"
+    options:
+      - id: a
+        text: "The OIDC identity token."
+        explanation: "Not correct. The token is a credential and is not logged."
+      - id: b
+        text: "The private key of the signer."
+        explanation: "Not correct. The private key is deleted after one signature."
+      - id: c
+        text: "The signature, together with the time it was added."
+        explanation: "Correct. Rekor records the signature and signs the integrated time."
+      - id: d
+        text: "Every certificate that Fulcio issues."
+        explanation: "Not correct. The certificate transparency log records certificates."
+    correct_option: c
+    explanation: "Correct. Rekor records the signature and signs the integrated time."
+
+  - id: ats120-010-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the claims of an OIDC identity token"
+    source_readings:
+      - sections/section-010/module-01/course-02-reading-an-oidc-token.md
+    prompt: "Which claim of the token says which service the token is meant for?"
+    options:
+      - id: a
+        text: "iss"
+        explanation: "Not correct. iss names the issuer of the token."
+      - id: b
+        text: "sub"
+        explanation: "Not correct. sub names who the token is about."
+      - id: c
+        text: "exp"
+        explanation: "Not correct. exp is the time the token stops being valid."
+      - id: d
+        text: "aud"
+        explanation: "Correct. The audience claim names the intended service, here sigstore."
+    correct_option: d
+    explanation: "Correct. The audience claim names the intended service, here sigstore."
+
+  - id: ats120-010-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what Fulcio checks in a token"
+    source_readings:
+      - sections/section-010/module-01/course-02-reading-an-oidc-token.md
+    prompt: "A valid token has the audience of the Kubernetes API server. What does Fulcio do with it?"
+    options:
+      - id: a
+        text: "It issues a certificate, because the token signature is valid."
+        explanation: "Not correct. A valid signature is not enough. The audience must match too."
+      - id: b
+        text: "It refuses the token, because the audience is not the client ID Fulcio is configured with."
+        explanation: "Correct. Fulcio needs the audience it is configured for, here sigstore."
+      - id: c
+        text: "It issues a certificate and writes the audience into the identity."
+        explanation: "Not correct. The audience is not written into the identity."
+      - id: d
+        text: "It asks the signer for a second token."
+        explanation: "Not correct. Fulcio does not ask for a second token."
+    correct_option: b
+    explanation: "Correct. Fulcio needs the audience it is configured for, here sigstore."
+
+  - id: ats120-010-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain how Fulcio finds the issuer's keys"
+    source_readings:
+      - sections/section-010/module-01/course-02-reading-an-oidc-token.md
+    prompt: "How does Fulcio get the public keys to check the signature of a Kubernetes service account token?"
+    options:
+      - id: a
+        text: "The signer sends the public key together with the token."
+        explanation: "Not correct. Fulcio does not trust keys from the signer for this check."
+      - id: b
+        text: "It reads them from the trusted root file of the verifier."
+        explanation: "Not correct. The trusted root is for verifiers, not for checking tokens."
+      - id: c
+        text: "It follows the iss claim to the discovery document and reads the JWKS address from it."
+        explanation: "Correct. The discovery document names the jwks_uri with the public keys."
+      - id: d
+        text: "It asks Rekor for the keys of the issuer."
+        explanation: "Not correct. Rekor does not store issuer keys."
+    correct_option: c
+    explanation: "Correct. The discovery document names the jwks_uri with the public keys."
+
+  - id: ats120-010-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the identity and the issuer in a Fulcio certificate"
+    source_readings:
+      - sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+    prompt: "For a Kubernetes token, which identity does Fulcio write into the Subject Alternative Name of the certificate?"
+    options:
+      - id: a
+        text: "A URI with the pod name and the node name."
+        explanation: "Not correct. Fulcio does not write the pod name or the node name."
+      - id: b
+        text: "The email address of the person who started the pod."
+        explanation: "Not correct. A Kubernetes token has no email address."
+      - id: c
+        text: "The Base64 text of the token payload."
+        explanation: "Not correct. The payload is not written into the identity."
+      - id: d
+        text: "A URI with the namespace and the service account name, without the pod name."
+        explanation: "Correct. The format is https://kubernetes.io/namespaces/<namespace>/serviceaccounts/<name>."
+    correct_option: d
+    explanation: "Correct. The format is https://kubernetes.io/namespaces/<namespace>/serviceaccounts/<name>."
+
+  - id: ats120-010-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why the issuer must be checked"
+    source_readings:
+      - sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+    prompt: "Why does a verifier need the issuer as well as the identity?"
+    options:
+      - id: a
+        text: "Any OIDC provider could issue a token with the same subject, so only the issuer says who vouched for it."
+        explanation: "Correct. An identity without its issuer means little."
+      - id: b
+        text: "The issuer is the only part of the certificate that is signed."
+        explanation: "Not correct. The whole certificate is signed by Fulcio."
+      - id: c
+        text: "The issuer holds the private key of the signer."
+        explanation: "Not correct. The private key is deleted after signing."
+      - id: d
+        text: "The issuer is needed to find the bundle file."
+        explanation: "Not correct. The bundle is a file next to the artifact."
+    correct_option: a
+    explanation: "Correct. An identity without its issuer means little."
+
+  - id: ats120-010-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain why an expired certificate still verifies"
+    source_readings:
+      - sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+    prompt: "A certificate expired a year ago. Why can a verifier still accept the signature?"
+    options:
+      - id: a
+        text: "Fulcio extends every certificate when it is checked."
+        explanation: "Not correct. Fulcio does not extend certificates."
+      - id: b
+        text: "The verifier ignores the validity dates of keyless certificates."
+        explanation: "Not correct. The dates are checked against the logged time."
+      - id: c
+        text: "Rekor signed the time it added the entry, and that time lies inside the certificate window."
+        explanation: "Correct. The verifier compares the integrated time with the ten-minute window."
+      - id: d
+        text: "The private key is kept so the certificate can be renewed."
+        explanation: "Not correct. The private key is deleted right after signing."
+    correct_option: c
+    explanation: "Correct. The verifier compares the integrated time with the ten-minute window."
+
+  - id: ats120-010-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify a file keylessly"
+    source_readings:
+      - sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+    prompt: "What does cosign verify-blob need to know to verify a keyless signature?"
+    options:
+      - id: a
+        text: "Only the public key of the signer."
+        explanation: "Not correct. A keyless verifier does not use a key from the signer."
+      - id: b
+        text: "The expected identity and the expected issuer."
+        explanation: "Correct. cosign refuses keyless verification without both."
+      - id: c
+        text: "Only the name of the file."
+        explanation: "Not correct. The file alone does not say who must have signed it."
+      - id: d
+        text: "The password of the signer."
+        explanation: "Not correct. Keyless signing has no password."
+    correct_option: b
+    explanation: "Correct. cosign refuses keyless verification without both."

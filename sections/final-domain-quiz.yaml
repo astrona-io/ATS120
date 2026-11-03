@@ -1,0 +1,288 @@
+# Final domain knowledge check across all four sections.
+schema_version: 1
+kind: question_bank
+id: ats120-final
+course_id: ATS120
+exam_code: SIGSTORE
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: keyless-signing-fulcio-oidc
+  title: "Keyless Signing With Fulcio & OIDC"
+questions:
+  - id: ats120-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the problems of long-lived signing keys"
+    source_readings:
+      - sections/section-010/module-01/course-01-from-keys-to-certificates.md
+    prompt: "Which problem does keyless signing remove by never keeping a signing key?"
+    options:
+      - id: a
+        text: "A leaked private key puts every signature it ever made in doubt."
+        explanation: "Correct. With no long-lived key, there is nothing to leak or revoke."
+      - id: b
+        text: "A public key does not say who holds the private key, so no certificate can ever fix it."
+        explanation: "Not correct. Keyless signing fixes this with a certificate that names the identity."
+      - id: c
+        text: "A signature cannot be stored in a transparency log."
+        explanation: "Not correct. Keyless signatures are stored in Rekor."
+      - id: d
+        text: "An artifact cannot be signed twice."
+        explanation: "Not correct. Signing the same artifact twice is possible and is not the problem here."
+    correct_option: a
+    explanation: "Correct. With no long-lived key, there is nothing to leak or revoke."
+
+  - id: ats120-final-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the claims of an OIDC identity token"
+    source_readings:
+      - sections/section-010/module-01/course-02-reading-an-oidc-token.md
+    prompt: "Which claim of the token says which service the token is meant for?"
+    options:
+      - id: a
+        text: "iss"
+        explanation: "Not correct. iss names the issuer of the token."
+      - id: b
+        text: "aud"
+        explanation: "Correct. The audience claim names the intended service, here sigstore."
+      - id: c
+        text: "sub"
+        explanation: "Not correct. sub names who the token is about."
+      - id: d
+        text: "exp"
+        explanation: "Not correct. exp is the time the token stops being valid."
+    correct_option: b
+    explanation: "Correct. The audience claim names the intended service, here sigstore."
+
+  - id: ats120-final-q03
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain why an expired certificate still verifies"
+    source_readings:
+      - sections/section-010/module-01/course-03-what-fulcio-puts-in-a-certificate.md
+    prompt: "A certificate expired a year ago. Why can a verifier still accept the signature?"
+    options:
+      - id: a
+        text: "Fulcio extends every certificate when it is checked."
+        explanation: "Not correct. Fulcio does not extend certificates."
+      - id: b
+        text: "The verifier ignores the validity dates of keyless certificates."
+        explanation: "Not correct. The dates are checked against the logged time."
+      - id: c
+        text: "Rekor signed the time it added the entry, and that time lies inside the certificate window."
+        explanation: "Correct. The verifier compares the integrated time with the ten-minute window."
+      - id: d
+        text: "The private key is kept so the certificate can be renewed."
+        explanation: "Not correct. The private key is deleted right after signing."
+    correct_option: c
+    explanation: "Correct. The verifier compares the integrated time with the ten-minute window."
+
+  - id: ats120-final-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe what signing does to the image"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "What happens to the image digest when cosign signs the image?"
+    options:
+      - id: a
+        text: "It changes, because the signature is added to the image layers."
+        explanation: "Not correct. The signature is not added to the layers."
+      - id: b
+        text: "It changes, because cosign pushes a new tag."
+        explanation: "Not correct. No new image content is created."
+      - id: c
+        text: "It is replaced by the digest of the certificate."
+        explanation: "Not correct. The certificate digest does not replace the image digest."
+      - id: d
+        text: "It stays the same. The signature is a separate artifact next to the image."
+        explanation: "Correct. Signing does not change the image."
+    correct_option: d
+    explanation: "Correct. Signing does not change the image."
+
+  - id: ats120-final-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify an image for one exact identity"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "Verification with the identity ci/release-bot fails on an image that has a valid workstation signature. Why?"
+    options:
+      - id: a
+        text: "The workstation signature is invalid."
+        explanation: "Not correct. The workstation signature is valid. It is just another identity."
+      - id: b
+        text: "None of the certificates on the image names ci/release-bot."
+        explanation: "Correct. A verifier looks for a signature from the identity it was given."
+      - id: c
+        text: "cosign verify only accepts the first signature made."
+        explanation: "Not correct. cosign checks the signatures for the given identity."
+      - id: d
+        text: "The registry removed the signature after the first check."
+        explanation: "Not correct. Verifying does not remove signatures."
+    correct_option: b
+    explanation: "Correct. A verifier looks for a signature from the identity it was given."
+
+  - id: ats120-final-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the identity Fulcio writes for a service account"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "A Job runs as the service account release-bot in the namespace ci. Which identity does the certificate carry?"
+    options:
+      - id: a
+        text: "https://kubernetes.io/namespaces/ci/pods/sign-release"
+        explanation: "Not correct. Fulcio does not use pod or Job names."
+      - id: b
+        text: "https://kubernetes.io/serviceaccounts/release-bot"
+        explanation: "Not correct. The namespace is part of the identity."
+      - id: c
+        text: "https://kubernetes.io/namespaces/ci/serviceaccounts/release-bot"
+        explanation: "Correct. The namespace and the service account name make the identity."
+      - id: d
+        text: "system:serviceaccount:ci:default"
+        explanation: "Not correct. This is not the URI Fulcio writes, and the Job does not run as default."
+    correct_option: c
+    explanation: "Correct. The namespace and the service account name make the identity."
+
+  - id: ats120-final-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the problem of an unanchored regular expression"
+    source_readings:
+      - sections/section-030/module-01/course-01-identities-regexps-and-issuers.md
+    prompt: "The pattern release-bot is used as an identity regular expression. What is wrong with it?"
+    options:
+      - id: a
+        text: "It is too strict and rejects the real release-bot."
+        explanation: "Not correct. It accepts the real one and many others."
+      - id: b
+        text: "It is not valid Go regular expression syntax."
+        explanation: "Not correct. The syntax is valid. The pattern is too loose."
+      - id: c
+        text: "It checks the issuer instead of the identity."
+        explanation: "Not correct. The flag checks the identity."
+      - id: d
+        text: "It matches anywhere in the URI, so a release-bot in any namespace is accepted."
+        explanation: "Correct. Anchor the pattern with ^ and $."
+    correct_option: d
+    explanation: "Correct. Anchor the pattern with ^ and $."
+
+  - id: ats120-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the claims in a GitHub Actions certificate"
+    source_readings:
+      - sections/section-030/module-01/course-02-github-actions-identities.md
+    prompt: "What is the identity in the SAN of a certificate from a GitHub Actions workflow?"
+    options:
+      - id: a
+        text: "The URL of the workflow file at the reference it ran from."
+        explanation: "Correct. The form is https://github.com/<owner>/<repository>/.github/workflows/<file>@<ref>."
+      - id: b
+        text: "The GitHub user name of the person who pushed."
+        explanation: "Not correct. The identity is the workflow URL."
+      - id: c
+        text: "The name of the runner machine."
+        explanation: "Not correct. Runner names are not the identity."
+      - id: d
+        text: "The SHA-256 digest of the image."
+        explanation: "Not correct. The digest is what is signed, not the identity."
+    correct_option: a
+    explanation: "Correct. The form is https://github.com/<owner>/<repository>/.github/workflows/<file>@<ref>."
+
+  - id: ats120-final-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what makes offline verification possible"
+    source_readings:
+      - sections/section-030/module-01/course-03-verifying-offline-with-a-bundle.md
+    prompt: "Why can cosign verify-blob with a bundle and a trusted root work without a network?"
+    options:
+      - id: a
+        text: "cosign keeps a copy of Fulcio and Rekor in memory."
+        explanation: "Not correct. cosign has no copy of the services."
+      - id: b
+        text: "Offline verification skips the log and the certificate."
+        explanation: "Not correct. Both are checked from the bundle."
+      - id: c
+        text: "The bundle holds the certificate, the signature and the Rekor entry with its proof, and the trusted root holds the keys to check them."
+        explanation: "Correct. No request to Fulcio or Rekor is needed."
+      - id: d
+        text: "The trusted root contains the signature of the file."
+        explanation: "Not correct. The signature is in the bundle."
+    correct_option: c
+    explanation: "Correct. No request to Fulcio or Rekor is needed."
+
+  - id: ats120-final-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Limit the id-token permission"
+    source_readings:
+      - sections/section-040/module-01/course-01-keyless-signing-in-github-actions.md
+    prompt: "Where should id-token: write be granted?"
+    options:
+      - id: a
+        text: "To every job, so all steps can sign."
+        explanation: "Not correct. This gives every job a signing identity."
+      - id: b
+        text: "To pull request code from forks."
+        explanation: "Not correct. Untrusted code with this permission can sign as your workflow."
+      - id: c
+        text: "Nowhere, because secrets.GITHUB_TOKEN signs images."
+        explanation: "Not correct. GITHUB_TOKEN is not a signing key."
+      - id: d
+        text: "Only to the job that signs."
+        explanation: "Correct. Other jobs then cannot get a signing identity."
+    correct_option: d
+    explanation: "Correct. Other jobs then cannot get a signing identity."
+
+  - id: ats120-final-q11
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Verify the release build"
+    source_readings:
+      - sections/section-040/module-01/course-01-keyless-signing-in-github-actions.md
+    prompt: "Which check proves an image was built from the run for the tag v1.9.6?"
+    options:
+      - id: a
+        text: "--certificate-github-workflow-ref=refs/tags/v1.9.6"
+        explanation: "Correct. It checks the git reference claim."
+      - id: b
+        text: "--certificate-oidc-issuer-regexp='.*'"
+        explanation: "Not correct. That accepts every issuer."
+      - id: c
+        text: "--allow-http-registry"
+        explanation: "Not correct. It does not check a reference."
+      - id: d
+        text: "--certificate-identity-regexp='^https://github\\.com/'"
+        explanation: "Not correct. It accepts any GitHub workflow."
+    correct_option: a
+    explanation: "Correct. It checks the git reference claim."
+
+  - id: ats120-final-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify in the same run"
+    source_readings:
+      - sections/section-040/module-01/course-02-a-kubernetes-job-as-the-ci-signer.md
+    prompt: "Why does the release Job verify the signature in the same run?"
+    options:
+      - id: a
+        text: "Verifying makes the certificate valid for longer."
+        explanation: "Not correct. The validity does not change."
+      - id: b
+        text: "A Job can succeed while signing as the wrong identity, and the verify step stops the pipeline."
+        explanation: "Correct. The verify step uses the identity the deployment demands."
+      - id: c
+        text: "Verifying uploads the signature to Rekor."
+        explanation: "Not correct. Signing uploads it."
+      - id: d
+        text: "cosign sign does not work without a verify step."
+        explanation: "Not correct. Signing works alone. The check is a safeguard."
+    correct_option: b
+    explanation: "Correct. The verify step uses the identity the deployment demands."

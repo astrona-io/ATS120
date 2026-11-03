@@ -1,0 +1,245 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats120-020
+course_id: ATS120
+exam_code: SIGSTORE
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "Signing With A Workload Identity"
+placement:
+  position: after
+  reading: sections/section-020/capstone/labs/lab-01/question.md
+questions:
+  - id: ats120-020-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why cosign signs a digest and not a tag"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "Why should a signature cover the image digest and not the tag?"
+    options:
+      - id: a
+        text: "A digest is smaller than a tag, so signing it is faster."
+        explanation: "Not correct. Size is not the reason."
+      - id: b
+        text: "A tag can be moved to other content, but a digest names one exact content."
+        explanation: "Correct. A signature on a tag could follow the tag to new content."
+      - id: c
+        text: "Registries refuse signatures that refer to a tag."
+        explanation: "Not correct. The reason is about what the signature covers."
+      - id: d
+        text: "A tag is deleted when the image is signed."
+        explanation: "Not correct. Signing does not delete tags."
+    correct_option: b
+    explanation: "Correct. A signature on a tag could follow the tag to new content."
+
+  - id: ats120-020-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe what signing does to the image"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "What happens to the image digest when cosign signs the image?"
+    options:
+      - id: a
+        text: "It changes, because the signature is added to the image layers."
+        explanation: "Not correct. The signature is not added to the layers."
+      - id: b
+        text: "It changes, because cosign pushes a new tag."
+        explanation: "Not correct. No new image content is created."
+      - id: c
+        text: "It stays the same. The signature is a separate artifact next to the image."
+        explanation: "Correct. Signing does not change the image."
+      - id: d
+        text: "It is replaced by the digest of the certificate."
+        explanation: "Not correct. The certificate digest does not replace the image digest."
+    correct_option: c
+    explanation: "Correct. Signing does not change the image."
+
+  - id: ats120-020-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the signature in the registry"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "Which command shows the signature artifact that is attached to an image?"
+    options:
+      - id: a
+        text: "cosign generate-key-pair"
+        explanation: "Not correct. That command creates a key pair and shows nothing about the image."
+      - id: b
+        text: "regctl image digest"
+        explanation: "Not correct. It prints the digest of the image only."
+      - id: c
+        text: "kubectl get secret"
+        explanation: "Not correct. The signature is in the registry, not in a Secret."
+      - id: d
+        text: "cosign tree"
+        explanation: "Correct. cosign tree lists what is attached to the image."
+    correct_option: d
+    explanation: "Correct. cosign tree lists what is attached to the image."
+
+  - id: ats120-020-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain how signatures add up"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "An image was signed from the workstation, and later by ci/release-bot. What does the image have?"
+    options:
+      - id: a
+        text: "Two signatures next to each other. The second does not replace the first."
+        explanation: "Correct. Signatures add up and never replace each other."
+      - id: b
+        text: "Only the signature of ci/release-bot, because the newest signature replaces the old one."
+        explanation: "Not correct. Signatures do not replace each other."
+      - id: c
+        text: "Only the signature of the workstation, because it came first."
+        explanation: "Not correct. Both signatures are attached."
+      - id: d
+        text: "No valid signature, because two identities conflict."
+        explanation: "Not correct. Different identities do not conflict."
+    correct_option: a
+    explanation: "Correct. Signatures add up and never replace each other."
+
+  - id: ats120-020-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify an image for one exact identity"
+    source_readings:
+      - sections/section-020/module-01/course-01-signing-an-image-with-a-token.md
+    prompt: "Verification with the identity ci/release-bot fails on an image that has a valid workstation signature. Why?"
+    options:
+      - id: a
+        text: "The workstation signature is invalid."
+        explanation: "Not correct. The workstation signature is valid. It is just another identity."
+      - id: b
+        text: "cosign verify only accepts the first signature made."
+        explanation: "Not correct. cosign checks the signatures for the given identity."
+      - id: c
+        text: "None of the certificates on the image names ci/release-bot."
+        explanation: "Correct. A verifier looks for a signature from the identity it was given."
+      - id: d
+        text: "The registry removed the signature after the first check."
+        explanation: "Not correct. Verifying does not remove signatures."
+    correct_option: c
+    explanation: "Correct. A verifier looks for a signature from the identity it was given."
+
+  - id: ats120-020-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the identity Fulcio writes for a service account"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "A Job runs as the service account release-bot in the namespace ci. Which identity does the certificate carry?"
+    options:
+      - id: a
+        text: "https://kubernetes.io/namespaces/ci/pods/sign-release"
+        explanation: "Not correct. Fulcio does not use pod or Job names."
+      - id: b
+        text: "https://kubernetes.io/serviceaccounts/release-bot"
+        explanation: "Not correct. The namespace is part of the identity."
+      - id: c
+        text: "system:serviceaccount:ci:default"
+        explanation: "Not correct. This is not the URI Fulcio writes, and the Job does not run as default."
+      - id: d
+        text: "https://kubernetes.io/namespaces/ci/serviceaccounts/release-bot"
+        explanation: "Correct. The namespace and the service account name make the identity."
+    correct_option: d
+    explanation: "Correct. The namespace and the service account name make the identity."
+
+  - id: ats120-020-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the cause of a wrong signing identity"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "A signing Job has no serviceAccountName and the Job succeeds. As which identity does it sign?"
+    options:
+      - id: a
+        text: "The default service account of its namespace."
+        explanation: "Correct. The Job signs as the wrong identity and does not fail."
+      - id: b
+        text: "ci/release-bot, because the Job is in the namespace ci."
+        explanation: "Not correct. The identity comes from the service account, not the namespace alone."
+      - id: c
+        text: "No identity, because cosign refuses to sign."
+        explanation: "Not correct. Signing works and produces a certificate for default."
+      - id: d
+        text: "The node the pod runs on."
+        explanation: "Not correct. Nodes are not part of the identity."
+    correct_option: a
+    explanation: "Correct. The Job signs as the wrong identity and does not fail."
+
+  - id: ats120-020-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a Job that signs with no Secret"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "What does a keyless signing Job get from its pod spec instead of a signing key?"
+    options:
+      - id: a
+        text: "A Secret with the private key."
+        explanation: "Not correct. A keyless signer needs no Secret."
+      - id: b
+        text: "A projected service account token with the audience sigstore."
+        explanation: "Correct. The token is the only credential the Job needs."
+      - id: c
+        text: "A password stored in a ConfigMap."
+        explanation: "Not correct. There is no password in keyless signing."
+      - id: d
+        text: "A copy of the Fulcio root key."
+        explanation: "Not correct. Fulcio keeps its own key."
+    correct_option: b
+    explanation: "Correct. The token is the only credential the Job needs."
+
+  - id: ats120-020-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Control who may sign as a service account"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "Why does RBAC on the namespace matter for a signer service account?"
+    options:
+      - id: a
+        text: "RBAC encrypts the signatures in the registry."
+        explanation: "Not correct. RBAC does not encrypt signatures."
+      - id: b
+        text: "RBAC sets the audience of the token."
+        explanation: "Not correct. The pod spec sets the audience."
+      - id: c
+        text: "RBAC is needed to read the digest of an image."
+        explanation: "Not correct. Reading a digest does not depend on this."
+      - id: d
+        text: "Whoever can run pods as that service account can sign as that identity."
+        explanation: "Correct. Limit who can create pods in the namespace."
+    correct_option: d
+    explanation: "Correct. Limit who can create pods in the namespace."
+
+  - id: ats120-020-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Fix a Job that cannot be changed"
+    source_readings:
+      - sections/section-020/module-01/course-02-running-the-signer-as-a-workload.md
+    prompt: "You edited the pod template of a Job that already exists and applied it. What is the correct fix?"
+    options:
+      - id: a
+        text: "Delete the Job and create it again, because a Job pod template cannot be changed."
+        explanation: "Correct. The template is fixed after creation."
+      - id: b
+        text: "Apply the file a second time until it takes effect."
+        explanation: "Not correct. The template stays unchanged however often you apply."
+      - id: c
+        text: "Restart the kubelet on the node."
+        explanation: "Not correct. The kubelet does not change a Job template."
+      - id: d
+        text: "Delete the ConfigMap release-info."
+        explanation: "Not correct. That removes the digest and fixes nothing."
+    correct_option: a
+    explanation: "Correct. The template is fixed after creation."
