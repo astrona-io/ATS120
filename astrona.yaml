@@ -13,7 +13,7 @@
 training:
   id: ATS120
   title: "Sigstore: Keyless Signing With Fulcio & OIDC"
-  maturity: draft
+  maturity: alpha
   description: >
     Training material covering the Keyless Signing With Fulcio & OIDC domain
     of the Sigstore training path: how keyless signing works, OIDC identity
