@@ -135,7 +135,7 @@ modules:
         difficulty: intermediate
         estimated_duration: 20m
         topic: keyless-flow
-        task_kind: investigation
+        task_kind: troubleshooting
         tags: [rekor, log-index, bundle, certificate, verify-blob]
         learning_goals:
           - Read the log index and the identity from a published bundle
@@ -407,7 +407,7 @@ modules:
         difficulty: intermediate
         estimated_duration: 20m
         topic: verification
-        task_kind: investigation
+        task_kind: troubleshooting
         tags: [attestation, verify-attestation, predicate, in-toto, certificate-identity]
         learning_goals:
           - Verify an attestation for one exact identity
