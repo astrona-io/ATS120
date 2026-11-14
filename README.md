@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://astrona.io/courses/sigstore">
+    <img src="https://astrona.io/courses/sigstore/domains/ATS120.svg" alt="ATS120: Keyless Signing With Fulcio & OIDC, part of the Sigstore course on Astrona" width="100%">
+  </a>
+</p>
+
 # ATS120 — Keyless Signing With Fulcio & OIDC (Sigstore)
 
 Course material for the **Keyless Signing With Fulcio & OIDC** domain of the
